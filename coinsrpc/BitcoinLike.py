@@ -50,6 +50,9 @@ class Decenomy:
     def listtxs(self, account, number):
         txs_list = self.rpc.listtransactions(account, number)
         return txs_list
+    def listunspent(self, addr, minc = 1, maxc = 9999999, watch = 1,):
+        txs_list = self.rpc.listunspent(minc, maxc, addr, watch)
+        return txs_list
     def gettx(self, txid):
         tx = self.rpc.gettransaction(txid)
         return tx
