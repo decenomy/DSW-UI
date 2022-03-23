@@ -1,7 +1,7 @@
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 import time
 
-class Bitcoin:
+class Decenomy:
     def __init__(self, rpcuser, rpcpassword, host, port):
         self.rpcuser = rpcuser
         self.rpcpassword = rpcpassword
@@ -15,11 +15,35 @@ class Bitcoin:
     def hash(self, block):
         block_hash = self.rpc.getblockhash(block)
         return block_hash
+    def getblockchaininfo():
+        info = self.rpc.getblockchaininfo()
+        return info
+    #== Network ==#
+    def addnode(self, node, method):
+        try:
+            res = self.rpc.addnode(node, method)
+            a = True
+        except:
+            a = False
+        return a
+    def clearbanned(self):
+        res = self.rpc.clearbanned()
+        return res
     #== Control ==#
     def getinfo(self):
         getinfo = self.rpc.getinfo()
         return getinfo
+    #== Util ==#
+    def validate(self, address):
+        res = self.rpc.validateaddress(address)
+        return res
     #== Wallet ==#
+    def getnewaddr(self, label = ""):
+        addr  = self.rpc.getnewaddress(label)
+        return addr
+    def staking(self):
+        status = self.rpc.getstakingstatus()
+        return status
     def peers(self):
         peers_list = self.rpc.getpeerinfo()
         return peer_list
