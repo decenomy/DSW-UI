@@ -20,6 +20,7 @@ def login():
         port = request.form['port']
         try:
             coin =  Decenomy(rpcuser, rpcpass, host, port)
+            test_conn = coin.getinfo()
             session['loggedin'] = True
             session['user'] = rpcuser
             session['pass'] = rpcpass
