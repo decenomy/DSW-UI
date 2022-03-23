@@ -8,15 +8,24 @@ class Bitcoin:
         self.host = host
         self.port = port
         self.rpc = AuthServiceProxy("http://%s:%s@%s:%s"%(self.rpcuser, self.rpcpassword, self.host, self.port))
+    #== Blockchain ==#
+    def blocks(self):
+        num_blocks = self.rpc.getblockcount()
+        return num_blocks
+    def hash(self, block):
+        block_hash = self.rpc.getblockhash(block)
+        return block_hash
+    #== Control ==#
     def getinfo(self):
         getinfo = self.rpc.getinfo()
         return getinfo
-    def peer(self):
-        peer = self.rpc.getpeerinfo()
-        return peer
+    #== Wallet ==#
+    def peers(self):
+        peers_list = self.rpc.getpeerinfo()
+        return peer_list
     def listtxs(self, account, number):
-        list = self.rpc.listtransactions(account, number)
-        return list
+        txs_list = self.rpc.listtransactions(account, number)
+        return txs_list
     def gettx(self, txid):
         tx = self.rpc.gettransaction(txid)
         return tx
@@ -29,9 +38,3 @@ class Bitcoin:
     def send(self, address, amount):
         txid = self.rpc.sendtoaddress(address, amount)
         return txid
-    def blocks(self):
-        bal = self.rpc.getblockcount()
-        return bal
-    def hash(self, block):
-        bal = self.rpc.getblockhash(block)
-        return bal
