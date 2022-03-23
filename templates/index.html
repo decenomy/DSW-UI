@@ -1,22 +1,69 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DSW Web UI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-  </head>
-  <body>
+{% include 'inc/header.html' %}  
   <section class="section">
     <div class="container">
       <h1 class="title">
-        Hello World
+        DSW UI
       </h1>
-      <p class="subtitle">
-        My first website with <strong>Bulma</strong>!
-      </p>
+      <div class="box">
+      <form method="POST" id="loginform">
+      <div class="field">
+        <label class="label">RPC User</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="" name="user">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">RPC Password</label>
+        <div class="control">
+          <input class="input" type="password" placeholder="" name="pass">
+        </div>
+
+      <div class="field">
+        <label class="label">Host</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="" name="host">
+        </div>
+
+      <div class="field">
+        <label class="label">Port</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="" name="port">
+        </div>
+      </div>
+      <input class="button is-info is-rounded is-outlined" type="submit" value="Connect">
+    </form>
+    </div>
     </div>
   </section>
-  </body>
-</html>
+<script>
+$(document).ready(function() {
+$("#loginform").on('submit',function(e) {
 
+  e.preventDefault();
+  $.ajax({
+  method:"POST",
+  url: "/login",
+  dataType:"html",
+  data:$("#loginform").serialize(),
+  success: function(data){
+
+  if (data2 == 'Connected! You will be redirected in a few seconds...') {
+    toastr.options.positionClass = 'toast-bottom-right';
+    toastr.success(data);
+    setTimeout(function (){
+     window.location.href = '/dash';
+    }, 2000);
+
+}
+else {
+  toastr.options.positionClass = 'toast-bottom-right';
+    toastr.error(data);
+}
+
+    }});
+});
+});
+</script>
+
+{% include 'inc/footer.html' %}
