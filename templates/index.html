@@ -9,26 +9,26 @@
       <div class="field">
         <label class="label">RPC User</label>
         <div class="control">
-          <input class="input" type="text" placeholder="" name="user">
+          <input class="input" type="text" placeholder="" name="user" id="user">
         </div>
       </div>
 
       <div class="field">
         <label class="label">RPC Password</label>
         <div class="control">
-          <input class="input" type="password" placeholder="" name="pass">
+          <input class="input" type="password" placeholder="" name="pass" id="pass">
         </div>
 
       <div class="field">
         <label class="label">Host</label>
         <div class="control">
-          <input class="input" type="text" placeholder="" name="host">
+          <input class="input" type="text" placeholder="" name="host" id="host">
         </div>
 
       <div class="field">
         <label class="label">Port</label>
         <div class="control">
-          <input class="input" type="text" placeholder="" name="port">
+          <input class="input" type="text" placeholder="" name="port" id="port">
         </div>
       </div>
       <input class="button is-info is-rounded is-outlined" type="submit" value="Connect">
@@ -48,18 +48,18 @@ $("#loginform").on('submit',function(e) {
   data:$("#loginform").serialize(),
   success: function(data){
 
-  if (data2 == 'Connected! You will be redirected in a few seconds...') {
-    toastr.options.positionClass = 'toast-bottom-right';
-    toastr.success(data);
-    setTimeout(function (){
-     window.location.href = '/dash';
-    }, 2000);
+      if (data == 'Connected! You will be redirected in a few seconds...') {
+          toastr.options.positionClass = 'toast-bottom-right';
+          toastr.success(data);
+          setTimeout(function (){
+           window.location.href = '/dash';
+          }, 2000);
 
-}
-else {
-  toastr.options.positionClass = 'toast-bottom-right';
-    toastr.error(data);
-}
+      }
+      else {
+        toastr.options.positionClass = 'toast-bottom-right';
+          toastr.error(data);
+      }
 
     }});
 });
