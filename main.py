@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from coinsrpc.BitcoinLike import *
-import json
+import simplejson as json
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
@@ -40,6 +40,19 @@ def dash():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     return render_template('dash.html', info=info)
+
+@app.route('/api/listtxs')
+def listtxs():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    info = coin.listtxs("*", 500)
+    return json.dumps(info)
+
+@app.route('/api/getinfo')
+def latestb():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    info = coin.getinfo()
+    return json.dumps(info)
+
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5000, debug=True)
