@@ -1,0 +1,5 @@
+bitcoinrpc==0.5.0
+Flask==2.0.3
+python_bitcoinrpc==1.0
+simplejson==3.17.6
+websockets==10.2
