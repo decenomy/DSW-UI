@@ -19,17 +19,24 @@ def bdownload(url, fname):
             bar.update(size)
 
 
-def wipe():
+def wipe(coin):
     plt = platform.system()
-
     if   plt == "Windows":
-        print("Your system is Windows")
+        home = os.path.expanduser("~")
+        for i in listdir(home + "\AppData\Roaming\\" + coin.capitalize() + "blocks" ):
+            os.remove(os.path.join(home + "\AppData\Roaming\\" + coin.capitalize() + "blocks" , i))
+        for i in listdir(home + "\AppData\Roaming\\" + coin.capitalize() + "chainstate" ):
+            os.remove(os.path.join(home + "\AppData\Roaming\\" + coin.capitalize() + "chainstate" , i))
+        os.rmdir(home + "\AppData\Roaming\\" + coin.capitalize() + "blocks" )
+        os.rmdir(home + "\AppData\Roaming\\" + coin.capitalize() + "chainstate" )
+        with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
+            zip_ref.extractall(home + "\AppData\Roaming\\" + coin.capitalize())
     elif plt == "Linux":
         home = os.path.expanduser("~")
-        os.system("rm -rf " + home + "/.sapphire/chainstate")
-        os.system("rm -rf " + home + "/.sapphire/blocks")
+        os.system("rm -rf " + home + "/.." + coin + "/chainstate")
+        os.system("rm -rf " + home + "/." + coin + "/blocks")
         with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
-            zip_ref.extractall(home + "/.sapphire/")
+            zip_ref.extractall(home + "/." + coin + "/")
         os.remove("bootstrap.zip")
     elif plt == "Darwin":
         print("Your system is MacOS")
@@ -39,5 +46,5 @@ def wipe():
 
 bdownload("https://explorer.decenomy.net/bootstraps/SAPP/bootstrap.zip", "bootstrap.zip")
 
-wipe()
+wipe("sapphire")
 
