@@ -15,6 +15,9 @@ class Decenomy:
     def hash(self, block):
         block_hash = self.rpc.getblockhash(block)
         return block_hash
+    def block(self, block):
+        block_info = self.rpc.getblock(block)
+        return block_info
     def getblockchaininfo():
         info = self.rpc.getblockchaininfo()
         return info

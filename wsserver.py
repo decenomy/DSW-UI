@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from coinsrpc.BitcoinLike import *
 import asyncio
 import websockets
@@ -6,18 +5,20 @@ import simplejson as json
 
 async def chaininfo(websocket):
     name = await websocket.recv()
-    print("please  info")
-    coin =  Decenomy("sapprpc", "sapprpc", "localhost", 11111)
-    print(name)
-    '''
-    if name == "getinfo":
-        info = coin.getinfo()
-        await websocket.send(json.dumps(info))
-    elif name == "list":
-        txs = coin.listtxs("*", 500)
-        await websocket.send(json.dumps(txs))
-    '''
-    print("sent info")
+    
+    coin =  Decenomy("sapprpc", "sapprpc", "localhost", 11111) #to do, get the info from somewhere else
+
+    if name.startswith("blockhash") == True:
+        bhash = name.split(":")[1]
+        info = coin.block(bhash)
+        await websocket.send(json.dumps(info))    
+    elif name.startswith("txid") == True:
+        txid = name.split(":")[1]
+        try:
+            tx = coin.gettx(txid)
+            await websocket.send(json.dumps(tx))
+        except Exception as e:
+            await websocket.send(json.dumps({"error": str(e)}))
 
 async def main():
     async with websockets.serve(chaininfo, "localhost", 8765):

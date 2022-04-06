@@ -31,6 +31,7 @@ def wipe(coin):
         os.rmdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "chainstate" )
         with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
             zip_ref.extractall(home + "\\AppData\\Roaming\\" + coin.capitalize())
+        os.remove("bootstrap.zip")
     elif plt == "Linux":
         home = os.path.expanduser("~")
         os.system("rm -rf " + home + "/.." + coin + "/chainstate")
@@ -44,7 +45,5 @@ def wipe(coin):
         print("Unidentified system")
 
 
-bdownload("https://explorer.decenomy.net/bootstraps/SAPP/bootstrap.zip", "bootstrap.zip")
-
-wipe("sapphire")
-
+#bdownload("https://explorer.decenomy.net/bootstraps/SAPP/bootstrap.zip", "bootstrap.zip")
+#wipe("sapphire")

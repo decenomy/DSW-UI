@@ -30,11 +30,11 @@ async def zero():
             if topic == "hashblock":
                 block = binascii.hexlify(body).decode("utf-8")
                 async with websockets.connect(uri) as websocket:
-                    await websocket.send(block)
+                    await websocket.send("blockhash:" + block)
             elif topic == "hashtx":
                 tx = binascii.hexlify(body).decode("utf-8")
                 async with websockets.connect(uri) as websocket:
-                    await websocket.send(tx)
+                    await websocket.send("txid:" + tx)
 
     except KeyboardInterrupt:
         zmqContext.destroy()
