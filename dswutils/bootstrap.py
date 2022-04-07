@@ -21,7 +21,7 @@ def bdownload(url, fname):
 
 def wipe(coin):
     plt = platform.system()
-    if   plt == "Windows":
+    if  plt == "Windows":
         home = os.path.expanduser("~")
         for i in listdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" ):
             os.remove(os.path.join(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" , i))
