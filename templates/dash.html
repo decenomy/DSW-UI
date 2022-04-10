@@ -106,15 +106,10 @@ $(document).ready(function(){
 });
 
 
+var websocket = new WebSocket("ws://localhost:8765");
 
-window.addEventListener("DOMContentLoaded", () => {
-  const websocket = new WebSocket("ws://localhost:8765/");
-
-});
-
-websocket.onMessage = (event) => {
-    console.log('Message Received')
-    
+websocket.onmessage = function (event) {
+  console.log(event.data);
 }
 
 
