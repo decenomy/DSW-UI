@@ -78,9 +78,10 @@ $.fn.dataTable.ext.errMode = 'throw';
         ],
 "order": [[ 3, "asc" ]],
     });
-    setInterval( function () {
-    table.ajax.reload( null, false );
-}, 1000 );
+    
+    //setInterval( function () {
+    //table.ajax.reload( null, false );
+//}, 1000 );
      
 });
 
@@ -117,7 +118,15 @@ websocket.onmessage = function (event) {
       $("#blocks").html('Latest block: '+block);
       }
     else if (mydata["type"] == "transaction") {
-      console.log("todo");
+      if (mydata["data"]["amount"] > 0) { var cat = "receive";} else { var cat = "send";}
+      var tt = $('#txs').DataTable().row.add({
+            "category": cat,
+            "txid": mydata["data"]["txid"],
+            "amount": mydata["data"]["amount"],
+            "confirmations": mydata["data"]["confirmations"],
+            "time": mydata["data"]["time"]
+        }).draw(false).node();
+      $(tt).css({backgroundColor: 'green'}).animate({backgroundColor: 'white'}, 2500);
       }
   }
 }
