@@ -108,3 +108,26 @@ class Decenomy:
         except:
             r = False
         return r
+    def importkey(self, privkey, label="", rescan=True):
+        try:
+            result = self.rpc.importprivkey(privkey, label, rescan)
+            r = True
+        except:
+            r = False
+        return r 
+    def send_many(self, addresses, conf=1, comment="", dummy=""):
+        txid = self.rpc.sendmany(dummy, addresses, conf, comment)
+        return txid
+    def addrbylabel(self, label):
+        addresses = self.rpc.getaddressesbylabel(label)
+        return addresses
+    def mns(self, mode):
+        mnlist = self.rpc.mnsync(mode)
+        return mnlist
+    def mncount(self):
+        mnc = self.rpc.getmasternodecount()
+        return mnc
+    def mnwinner(self, block=10, f=""):
+        mnw = self.rpc.getmasternodewinners(block, f)
+        return mnw
+
