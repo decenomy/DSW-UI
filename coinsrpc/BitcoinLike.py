@@ -68,3 +68,43 @@ class Decenomy:
     def send(self, address, amount):
         txid = self.rpc.sendtoaddress(address, amount)
         return txid
+    def mnoutputs(self):
+        info = self.rpc.getmasternodeoutputs()
+        return info   
+    def listmn(self, f=""):
+        mn = self.rpc.listmasternodes(f)  
+        return mn  
+    def setsplit(self, amount):
+        try:
+            result = self.rpc.setstakesplitthreshold(amount)
+            r = True
+        except:
+            r = False
+        return r
+    def mnkey(self):
+        key = self.rpc.createmasternodekey()
+        return key 
+    def dumpkey(self, address):
+        privkey = self.rpc.dumpprivkey(address)
+        return privkey 
+    def dumpw(self, filename):
+        try:
+            result = self.rpc.dumpwallet(filename)
+            r = True
+        except:
+            r = False
+        return r 
+    def encryptw(self, walletpassphrase):
+        try:
+            result = self.rpc.encryptwallet(walletpassphrase) 
+            r = True
+        except:
+            r = False
+        return r 
+    def changepw(self, oldpw, newpw):
+        try:
+            result = self.rpc.walletpassphrasechange(oldpw, newpw) 
+            r = True
+        except:
+            r = False
+        return r                         
