@@ -107,4 +107,4 @@ class Decenomy:
             r = True
         except:
             r = False
-        return r                         
+        return r

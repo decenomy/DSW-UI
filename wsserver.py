@@ -16,14 +16,14 @@ async def chaininfo(websocket):
     if name.startswith("blockhash") == True:
         bhash = name.split(":")[1]
         info = coin.block(bhash)
-        websockets.broadcast(USERS, json.dumps(info))
-        await websocket.send(json.dumps(info))    
+        websockets.broadcast(USERS, json.dumps({"type":"block", "data":info}))
+        await websocket.send(json.dumps({"type":"block", "data":info}))    
     elif name.startswith("txid") == True:
         txid = name.split(":")[1]
         try:
             tx = coin.gettx(txid)
-            websockets.broadcast(USERS, json.dumps(tx))
-            await websocket.send(json.dumps(tx))
+            websockets.broadcast(USERS, json.dumps({"type":"transaction", "data":tx}))
+            await websocket.send(json.dumps({"type":"transaction", "data":tx}))
         except Exception as e:
             websockets.broadcast(USERS, json.dumps({"error": str(e)}))
             await websocket.send(json.dumps({"error": str(e)}))

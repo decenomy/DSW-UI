@@ -102,14 +102,24 @@ function fetchdata(){
 }
 
 $(document).ready(function(){
- setInterval(fetchdata,1000);
+ fetchdata();
 });
 
 
 var websocket = new WebSocket("ws://localhost:8765");
 
 websocket.onmessage = function (event) {
-  console.log(event.data);
+  var mydata = JSON.parse(event.data);
+  if ('type' in mydata) {
+    if (mydata["type"] == "block") {
+      var block = mydata["data"]["height"];
+      //console.log(block);
+      $("#blocks").html('Latest block: '+block);
+      }
+    else if (mydata["type"] == "transaction") {
+      console.log("todo");
+      }
+  }
 }
 
 
