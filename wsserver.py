@@ -2,6 +2,7 @@ from coinsrpc.BitcoinLike import *
 import asyncio
 import websockets
 import simplejson as json
+from datetime import datetime
 
 USERS = set()
 
@@ -22,6 +23,8 @@ async def chaininfo(websocket):
         txid = name.split(":")[1]
         try:
             tx = coin.gettx(txid)
+            dt_object = datetime.fromtimestamp(tx["time"])
+            tx["time"] = str(dt_object)
             websockets.broadcast(USERS, json.dumps({"type":"transaction", "data":tx}))
             await websocket.send(json.dumps({"type":"transaction", "data":tx}))
         except Exception as e:

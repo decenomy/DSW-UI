@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from coinsrpc.BitcoinLike import *
+from datetime import datetime
 import simplejson as json
 
 app = Flask(__name__)
@@ -45,6 +46,9 @@ def dash():
 def listtxs():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.listtxs("*", 500)
+    for tx in info:
+        dt_object = datetime.fromtimestamp(tx["time"])
+        tx["time"] = str(dt_object)
     return json.dumps(info)
 
 @app.route('/api/getinfo')
