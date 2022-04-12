@@ -9,16 +9,17 @@ USERS = set()
 async def chaininfo(websocket):
     global USERS
     USERS.add(websocket)
-    
-    name = await websocket.recv()
-    print(name)
+    try:
+        name = await websocket.recv()
+    except websockets.ConnectionClosedOK:
+        name = ''
+        pass
     coin =  Decenomy("sapprpc", "sapprpc", "localhost", 11111) #to do, get the info from somewhere else
 
     if name.startswith("blockhash") == True:
         bhash = name.split(":")[1]
         info = coin.block(bhash)
-        websockets.broadcast(USERS, json.dumps({"type":"block", "data":info}))
-        await websocket.send(json.dumps({"type":"block", "data":info}))    
+        websockets.broadcast(USERS, json.dumps({"type":"block", "data":info})) 
     elif name.startswith("txid") == True:
         txid = name.split(":")[1]
         try:
@@ -26,12 +27,8 @@ async def chaininfo(websocket):
             dt_object = datetime.fromtimestamp(tx["time"])
             tx["time"] = str(dt_object)
             websockets.broadcast(USERS, json.dumps({"type":"transaction", "data":tx}))
-            await websocket.send(json.dumps({"type":"transaction", "data":tx}))
         except Exception as e:
             websockets.broadcast(USERS, json.dumps({"error": str(e)}))
-            await websocket.send(json.dumps({"error": str(e)}))
-    for u in USERS:
-        print(u)
     USERS.remove(websocket)
 
 async def main():

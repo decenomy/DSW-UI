@@ -35,6 +35,7 @@ async def zero():
                 tx = binascii.hexlify(body).decode("utf-8")
                 async with websockets.connect(uri) as websocket:
                     await websocket.send("txid:" + tx)
+            #websocket.close()
 
     except KeyboardInterrupt:
         zmqContext.destroy()

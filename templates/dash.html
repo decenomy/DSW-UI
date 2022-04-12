@@ -1,5 +1,6 @@
 {% include 'inc/header.html' %}  
 
+
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="https://bulma.io">
@@ -48,7 +49,6 @@
             <th>Type</th>
             <th>TXID</th>
             <th>Amount</th>
-            <th>Confirmations</th>
             <th>Time</th> 
         </tr>
     </thead></table>
@@ -71,17 +71,12 @@ $.fn.dataTable.ext.errMode = 'throw';
       "columns": [
             { "data": "category" },
             { "data": "txid" },
-            { "data": "amount"}, //, render: $.fn.dataTable.render.number(',', '.', 8, '') },
-             { "data": "confirmations" },
-              { "data": "time" },
+            { "data": "amount"},
+            { "data": "time" },
            
         ],
-"order": [[ 3, "asc" ]],
+"order": [[ 3, "desc" ]],
     });
-    
-    //setInterval( function () {
-    //table.ajax.reload( null, false );
-//}, 1000 );
      
 });
 
@@ -123,10 +118,9 @@ websocket.onmessage = function (event) {
             "category": cat,
             "txid": mydata["data"]["txid"],
             "amount": mydata["data"]["amount"],
-            "confirmations": mydata["data"]["confirmations"],
             "time": mydata["data"]["time"]
         }).draw(false).node();
-      $(tt).css({backgroundColor: 'green'}).animate({backgroundColor: 'white'}, 2500);
+      $(tt).css({backgroundColor: 'green'}).animate({backgroundColor: 'white'}, 2000);
       }
   }
 }
