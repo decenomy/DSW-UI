@@ -16,8 +16,7 @@
 	        "rpcpassword": "dasdrpc",
 	        "rpcport": 22222,
 	        "host":"localhost"
-         },
-		
+         }
 
 	]
 }
