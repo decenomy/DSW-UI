@@ -1,10 +1,16 @@
 from coinsrpc.BitcoinLike import *
+import sys
 import asyncio
 import websockets
 import simplejson as json
 from datetime import datetime
 
 USERS = set()
+
+ticker = sys.argv[1]
+
+with open('settings.json') as json_file:
+    app_settings = json.load(json_file)
 
 async def chaininfo(websocket):
     global USERS
@@ -14,7 +20,9 @@ async def chaininfo(websocket):
     except websockets.ConnectionClosedOK:
         name = ''
         pass
-    coin =  Decenomy("sapprpc", "sapprpc", "localhost", 11111) #to do, get the info from somewhere else
+    for c in app_settings["coins"]:
+        if c["ticker"] == ticker:
+            coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
 
     if name.startswith("blockhash") == True:
         bhash = name.split(":")[1]

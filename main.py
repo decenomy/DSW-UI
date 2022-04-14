@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from coinsrpc.BitcoinLike import *
 from datetime import datetime
 import simplejson as json
+import subprocess
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
@@ -17,6 +18,16 @@ with open('settings.json') as json_file:
 @app.route('/')
 def index():
     return render_template('index.html', app_settings=app_settings)
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('user', None)
+    session.pop('pass', None)
+    session.pop('host', None)
+    session.pop('port', None)
+    session.pop('coin', None)
+    return redirect(url_for('access'))
 
 @app.route('/login', methods =['POST'])
 def login():
@@ -36,6 +47,7 @@ def login():
                         session['pass'] = c["rpcpassword"]
                         session['host'] = c["host"]
                         session['port'] = c["rpcport"]
+                        session['coin'] = selected_coin
                         msg = 'Connected! You will be redirected in a few seconds...'
                         break
             except Exception as e:
@@ -52,6 +64,8 @@ def login():
 def dash():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
+    process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+    process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
     return render_template('dash.html', info=info)
 
 @app.route('/api/listtxs')
