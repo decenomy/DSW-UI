@@ -18,8 +18,8 @@
     <div class="navbar-start">
       
 
-      <a class="navbar-item" id="balance">
-
+      <a class="navbar-item">
+      Links here
       </a>
 
      
@@ -42,10 +42,11 @@
     <div class="columns">
       <div class="column">
       <div class="box">
+        <p id="blocks">Latest block: {{ info["blocks"] }}</p>
         <p>Wallet version: {{ info["version"] }}</p>
         <p>Connections: {{ info["connections"] }}</p>
         <p>Staking status: {{ info["staking status"] }}</p>
-        <p id="blocks"></p>
+        <p id ="balance">Balance: {{ info["balance"] }}</p>
       </div>
       </div>
       <div class="column">
