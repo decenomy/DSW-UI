@@ -7,28 +7,22 @@
       <div class="box">
       <form method="POST" id="loginform">
       <div class="field">
-        <label class="label">RPC User</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="" name="user" id="user">
-        </div>
+       <label class="label">Wallet</label>
+       <div class="control">
+      <div class="select">
+       
+        <select id="coinselect" name="coinselect">
+          {% for coin in app_settings["coins"] %}
+          <option value="{{ coin.ticker }}">{{ coin.ticker }}</option>
+          {% endfor %}
+        </select>
       </div>
-
+      </div>
+    </div>
       <div class="field">
-        <label class="label">RPC Password</label>
+        <label class="label">Dashdboard Password</label>
         <div class="control">
-          <input class="input" type="password" placeholder="" name="pass" id="pass">
-        </div>
-
-      <div class="field">
-        <label class="label">Host</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="" name="host" id="host">
-        </div>
-
-      <div class="field">
-        <label class="label">Port</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="" name="port" id="port">
+          <input class="input" type="password" placeholder="" name="password" id="password">
         </div>
       </div>
       <input class="button is-info is-rounded is-outlined" type="submit" value="Connect">

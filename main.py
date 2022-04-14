@@ -6,30 +6,42 @@ import simplejson as json
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
 
+'''
+RPC CONFIG
+'''
+with open('settings.json') as json_file:
+    app_settings = json.load(json_file)
+
+
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', app_settings=app_settings)
 
 @app.route('/login', methods =['POST'])
 def login():
     msg = ''
 
-    if request.method == 'POST' and 'user' in request.form and 'pass' in request.form and 'host' in request.form and 'port' in request.form:
-        rpcuser = request.form['user']
-        rpcpass = request.form['pass']
-        host = request.form['host']
-        port = request.form['port']
-        try:
-            coin =  Decenomy(rpcuser, rpcpass, host, port)
-            test_conn = coin.getinfo()
-            session['loggedin'] = True
-            session['user'] = rpcuser
-            session['pass'] = rpcpass
-            session['host'] = host
-            session['port'] = port
-            msg = 'Connected! You will be redirected in a few seconds...'
-        except Exception as e:
-            msg = str(e)
+    if request.method == 'POST' and 'password' in request.form:
+        app_pass = request.form["password"]
+        selected_coin = request.form.get("coinselect")
+        if app_pass == app_settings["access_token"]:
+            try:
+                for c in app_settings["coins"]:
+                    if c["ticker"] == selected_coin:
+                        coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
+                        test_conn = coin.getinfo()
+                        session['loggedin'] = True
+                        session['user'] = c["rpcuser"]
+                        session['pass'] = c["rpcpassword"]
+                        session['host'] = c["host"]
+                        session['port'] = c["rpcport"]
+                        msg = 'Connected! You will be redirected in a few seconds...'
+                        break
+            except Exception as e:
+                msg = str(e)
+        else:
+            msg = 'Error, incorrect password'
     elif request.method == 'POST':
         msg = 'Error. All fields are mandatory'
     else:
