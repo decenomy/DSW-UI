@@ -27,7 +27,7 @@ def logout():
     session.pop('host', None)
     session.pop('port', None)
     session.pop('coin', None)
-    return redirect(url_for('access'))
+    return redirect(url_for('index'))
 
 @app.route('/login', methods =['POST'])
 def login():

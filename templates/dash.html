@@ -28,7 +28,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+          <a class="button is-primary" href="{{ url_for('logout') }}">
             <strong>Logout</strong>
           </a>
         </div>
@@ -106,7 +106,6 @@ function fetchdata(){
   dataType: "json",
   success: function(response){
 
-      $("#blocks").html('Latest block: '+response.blocks);
       $("#balance").html('Balance: '+response.balance.toFixed(8));
 
   }
@@ -114,7 +113,7 @@ function fetchdata(){
 }
 
 $(document).ready(function(){
- fetchdata();
+ setInterval(fetchdata,10000);
 });
 
 
