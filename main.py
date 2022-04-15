@@ -69,6 +69,12 @@ def dash():
     process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
     return render_template('dash.html', info=info, mn=mn)
 
+@app.route('/receive')
+def receive():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    addr = coin.getnewaddr()
+    return render_template('receive.html', addr=addr)
+
 @app.route('/api/listtxs')
 def listtxs():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])

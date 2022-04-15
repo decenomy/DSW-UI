@@ -1,0 +1,68 @@
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://bulma.io">
+      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="/dash">
+      Dashboard
+      </a>
+      
+
+      <a class="navbar-item" href="/receive">
+      Receive
+      </a>
+      <a class="navbar-item" href="/send">
+      Send
+      </a>
+      <a class="navbar-item" href="/mn">
+      My masternodes
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Utilities
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Bootstrap
+          </a>
+          <a class="navbar-item">
+            Update wallet
+          </a>
+          
+        </div></div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Advanced
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Create raw transaction
+          </a>
+        </div></div>
+     
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary" href="{{ url_for('logout') }}">
+            <strong>Logout</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
