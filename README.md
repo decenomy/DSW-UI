@@ -6,7 +6,8 @@ First clone the repo and install requirements:
 
 ```
 pip3 install -r requirements.txt
-'''
+
+```
 
 Add the following lines  in your coin.conf file:
 
@@ -45,8 +46,14 @@ Edit settings.json file with your own password and rpc configurations:
 
 ```
 
-Start the wallet:
+Start a wallet:
 
 ```
 ~/sapp/sapphired -daemon -server
+```
+
+Start the project:
+
+```
+python3 main.py
 ```
