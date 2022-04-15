@@ -19,9 +19,51 @@
       
 
       <a class="navbar-item">
-      Links here
+      Receive
       </a>
+      <a class="navbar-item">
+      Send
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Utilities
+        </a>
 
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Bootstrap
+          </a>
+          <a class="navbar-item">
+            Update wallet
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div></div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Advanced
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            Create raw transaction
+          </a>
+          <a class="navbar-item">
+            Update wallet
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item">
+            Report an issue
+          </a>
+        </div></div>
      
     </div>
 
@@ -50,7 +92,10 @@
       </div>
       </div>
       <div class="column">
-      <div class="box"></div>
+      <div class="box">
+        <p id="mymn">My masternodes: </p>
+        <p id="mntotal">Total:  {{ mn["total"] }}</p>
+      </div>
       </div>
       <div class="column">
       <div class="box"></div>
@@ -114,8 +159,22 @@ function fetchdata(){
  });
 }
 
+function fetchmn(){
+ $.ajax({
+  url: '/api/mncount',
+  type: 'GET',
+  dataType: "json",
+  success: function(response){
+      $("#mntotal").html('Total: '+response.total);
+      
+
+  }
+ });
+}
+
 $(document).ready(function(){
  setInterval(fetchdata,10000);
+ setInterval(fetchmn,60000);
 });
 
 

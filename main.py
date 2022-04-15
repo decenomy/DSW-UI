@@ -64,9 +64,10 @@ def login():
 def dash():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
+    mn = coin.mncount()
     process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
     process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
-    return render_template('dash.html', info=info)
+    return render_template('dash.html', info=info, mn=mn)
 
 @app.route('/api/listtxs')
 def listtxs():
@@ -81,6 +82,12 @@ def listtxs():
 def latestb():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
+    return json.dumps(info)
+
+@app.route('/api/mntotal')
+def mns():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    info = coin.mncount()
     return json.dumps(info)
 
 
