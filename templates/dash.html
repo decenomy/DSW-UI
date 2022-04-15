@@ -44,8 +44,8 @@
       <div class="box">
         <p id="blocks">Latest block: {{ info["blocks"] }}</p>
         <p>Wallet version: {{ info["version"] }}</p>
-        <p>Connections: {{ info["connections"] }}</p>
-        <p>Staking status: {{ info["staking status"] }}</p>
+        <p id="conn">Connections: {{ info["connections"] }}</p>
+        <p id="stake">Staking status: {{ info["staking status"] }}</p>
         <p id ="balance">Balance: {{ info["balance"] }}</p>
       </div>
       </div>
@@ -106,8 +106,9 @@ function fetchdata(){
   type: 'GET',
   dataType: "json",
   success: function(response){
-
       $("#balance").html('Balance: '+response.balance.toFixed(8));
+      $("#conn").html('Connections: '+response.connections);
+      $("#stake").html('Staking Status: '+response['staking status']);
 
   }
  });
