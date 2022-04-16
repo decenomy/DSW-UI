@@ -1,0 +1,73 @@
+{% include 'inc/header.html' %}  
+{% include 'inc/nav.html' %}  
+
+
+  <section class="section">
+    <div class="container">
+    <div class="columns">
+      <div class="column is-one-fifth">
+      
+      </div>
+      <div class="column">
+      <div class="box">
+      <form method="POST" id="sendform">
+      <div class="field">
+        <label class="label">Address</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="" name="address" id="address">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Amount</label>
+        <div class="control">
+          <input class="input" type="number" placeholder="123.45" name="amount" id="amount" min="0" step="0.00000001">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Wallet Passphrase</label>
+        <div class="control">
+          <input class="input" type="password" placeholder="" name="passphrase" id="passphrase">
+        </div>
+      </div>
+      <input class="button is-info is-rounded is-outlined" type="submit" value="Send">
+    </form>
+      </div>
+      </div>
+     
+      <div class="column is-one-fifth">
+      
+      </div>
+
+    </div>
+      
+  </section>
+<script>
+$(document).ready(function() {
+$("#sendform").on('submit',function(e) {
+
+  e.preventDefault();
+  $.ajax({
+  method:"POST",
+  url: "/api/sendtoaddress",
+  dataType:"html",
+  data:$("#sendform").serialize(),
+  success: function(data){
+
+      if (data.indexOf("Success! Transaction id:") != -1) {
+          toastr.options.positionClass = 'toast-bottom-right';
+          toastr.success(data);
+          setTimeout(function (){
+           window.location.href = '/dash';
+          }, 2000);
+      }
+      else {
+        toastr.options.positionClass = 'toast-bottom-right';
+          toastr.error(data);
+      }
+
+    }});
+});
+});
+
+</script>
+{% include 'inc/footer.html' %}

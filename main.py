@@ -48,6 +48,8 @@ def login():
                         session['host'] = c["host"]
                         session['port'] = c["rpcport"]
                         session['coin'] = selected_coin
+                        process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                        process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
                         msg = 'Connected! You will be redirected in a few seconds...'
                         break
             except Exception as e:
@@ -65,8 +67,6 @@ def dash():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     mn = coin.mncount()
-    process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
-    process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
     return render_template('dash.html', info=info, mn=mn)
 
 @app.route('/receive')
@@ -74,6 +74,10 @@ def receive():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     addr = coin.getnewaddr()
     return render_template('receive.html', addr=addr)
+
+@app.route('/send')
+def send():
+    return render_template('send.html')
 
 @app.route('/api/listtxs')
 def listtxs():
@@ -95,6 +99,25 @@ def mns():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mncount()
     return json.dumps(info)
+
+@app.route('/api/sendtoaddress', methods =['POST'])
+def sendto():
+    msg = ''
+    if request.method == 'POST' and 'address' in request.form and 'amount' in request.form and 'passphrase' in request.form:
+        coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+        valid = coin.validate(request.form["address"])
+        if valid["isvalid"] == True:
+            try:
+                unlock = coin.unlock(request.form["passphrase"], 5)
+                txid = coin.send(request.form["address"], request.form["amount"])
+                msg = "Success! Transaction id: " + txid
+            except Exception as e:
+                msg = str(e)
+        else:
+            msg = "Invalid address"
+    else:
+        msg = "All fields are mandatory"
+    return msg
 
 
 if __name__ == "__main__":

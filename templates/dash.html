@@ -84,7 +84,7 @@ function fetchdata(){
 
 function fetchmn(){
  $.ajax({
-  url: '/api/mncount',
+  url: '/api/mntotal',
   type: 'GET',
   dataType: "json",
   success: function(response){
@@ -108,7 +108,6 @@ websocket.onmessage = function (event) {
   if ('type' in mydata) {
     if (mydata["type"] == "block") {
       var block = mydata["data"]["height"];
-      //console.log(block);
       $("#blocks").html('Latest block: '+block);
       }
     else if (mydata["type"] == "transaction") {
