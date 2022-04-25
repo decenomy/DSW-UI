@@ -69,7 +69,8 @@ def dash():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     mn = coin.mncount()
-    return render_template('dash.html', info=info, mn=mn)
+    mynodes = len(coin.mymn())
+    return render_template('dash.html', info=info, mn=mn, mynodes=mynodes)
 
 @app.route('/receive')
 def receive():
