@@ -37,6 +37,11 @@ async def chaininfo(websocket):
             websockets.broadcast(USERS, json.dumps({"type":"transaction", "data":tx}))
         except Exception as e:
             websockets.broadcast(USERS, json.dumps({"error": str(e)}))
+
+    w_info = coin.getinfo()
+    websockets.broadcast(USERS, json.dumps({"type":"getinfo", "data":w_info}))
+
+
     USERS.remove(websocket)
 
 async def main():

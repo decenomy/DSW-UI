@@ -70,21 +70,6 @@ $.fn.dataTable.ext.errMode = 'throw';
 
 
 
-
-function fetchdata(){
- $.ajax({
-  url: '/api/getinfo',
-  type: 'GET',
-  dataType: "json",
-  success: function(response){
-      $("#balance").html('Balance: '+response.balance.toFixed(8));
-      $("#conn").html('Connections: '+response.connections);
-      $("#stake").html('Staking Status: '+response['staking status']);
-
-  }
- });
-}
-
 function fetchmn(){
  $.ajax({
   url: '/api/mntotal',
@@ -99,7 +84,6 @@ function fetchmn(){
 }
 
 $(document).ready(function(){
- setInterval(fetchdata,10000);
  setInterval(fetchmn,60000);
 });
 
@@ -122,6 +106,14 @@ websocket.onmessage = function (event) {
             "time": mydata["data"]["time"]
         }).draw(false).node();
       $(tt).css({backgroundColor: 'green'}).animate({backgroundColor: 'white'}, 2000);
+      }
+    else if (mydata["type"] == "getinfo") {
+      var balance = mydata["data"]["balance"];
+      var connections = mydata["data"]["connections"];
+      var staking = mydata["data"]["staking status"];
+      $("#balance").html('Balance: '+balance.toFixed(8));
+      $("#conn").html('Connections: '+connections);
+      $("#stake").html('Staking Status: '+staking);
       }
   }
 }
