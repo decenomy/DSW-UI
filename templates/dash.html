@@ -21,7 +21,10 @@
       </div>
       </div>
       <div class="column">
-      <div class="box"></div>
+      <div class="box">
+        <p>1 {{ session["coin"] }} = {{ p }} EUR</p>
+        <p>1 {{ session["coin"] }} = {{ "%.8f"|format(pb) }} BTC</p>
+      </div>
       </div>
 
     </div>

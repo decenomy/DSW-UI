@@ -5,6 +5,7 @@ from dswutils.bootstrap import *
 import sys, io
 import simplejson as json
 import subprocess
+import requests
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
@@ -70,7 +71,12 @@ def dash():
     info = coin.getinfo()
     mn = coin.mncount()
     mynodes = len(coin.mymn())
-    return render_template('dash.html', info=info, mn=mn, mynodes=mynodes)
+    price = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/EUR?param=bid").json()
+    p = round(price["response"]["rate"], 3)
+    priceb = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/BTC?param=bid").json()
+    pb = round(priceb["response"]["rate"], 8)
+
+    return render_template('dash.html', info=info, mn=mn, mynodes=mynodes, p=p, pb=pb)
 
 @app.route('/receive')
 def receive():
@@ -81,6 +87,10 @@ def receive():
 @app.route('/send')
 def send():
     return render_template('send.html')
+
+@app.route('/mnexplorer')
+def mnexplorer():
+    return render_template('mnexplorer.html')
 
 @app.route('/bootstrap')
 def boot():
@@ -122,6 +132,15 @@ def latestb():
 def mns():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mncount()
+    return json.dumps(info)
+
+@app.route('/api/mnlist')
+def masternodeslist():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    info = coin.listmn()
+    for i in info:
+        dt_object = datetime.fromtimestamp(i["lastpaid"])
+        i["lastpaid"] = str(dt_object)
     return json.dumps(info)
 
 @app.route('/api/sendtoaddress', methods =['POST'])

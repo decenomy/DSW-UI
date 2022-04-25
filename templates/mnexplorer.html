@@ -1,0 +1,52 @@
+{% include 'inc/header.html' %}  
+{% include 'inc/nav.html' %}  
+
+
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+      <div class="box">
+      <table id="mn" class="display table is-fullwidth is-hoverable"  width="100%">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Address</th>
+            <th>IP</th>
+            <th>Status</th> 
+            <th>Last Paid</th>
+        </tr>
+    </thead></table>
+    </div>
+    </div>
+  </div>
+  </section>
+<script>
+$(document).ready(function (){
+$.fn.dataTable.ext.errMode = 'throw';
+    var table = $('#mn').DataTable({
+
+      'ajax': {
+          'url': "/api/mnlist",
+          'dataSrc': ''
+
+      },
+      "language": {
+        "emptyTable": "No records found",
+    },
+      "columns": [
+            { "data": "rank" },
+            { "data": "addr" },
+            { "data": "ip"},
+            { "data": "status"},
+            { "data": "lastpaid" },
+           
+        ],
+"order": [[ 0, "asc" ]],
+    });
+     setInterval( function () {
+    table.ajax.reload( null, false );
+}, 10000 );
+});
+
+</script>
+{% include 'inc/footer.html' %}
