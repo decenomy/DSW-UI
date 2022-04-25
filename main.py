@@ -92,6 +92,10 @@ def send():
 def mnexplorer():
     return render_template('mnexplorer.html')
 
+@app.route('/mymn')
+def listmymn():
+    return render_template('mymn.html')
+
 @app.route('/bootstrap')
 def boot():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
@@ -133,6 +137,12 @@ def mns():
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mncount()
     return json.dumps(info)
+
+@app.route('/api/mymn')
+def mymns():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    info = coin.mymn()
+    return json.dumps(info)   
 
 @app.route('/api/mnlist')
 def masternodeslist():

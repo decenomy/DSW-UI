@@ -1,0 +1,48 @@
+{% include 'inc/header.html' %}  
+{% include 'inc/nav.html' %}  
+
+
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+      <div class="box">
+      <table id="mn" class="display table is-fullwidth is-hoverable"  width="100%">
+    <thead>
+        <tr>
+            <th>Alias</th>
+            <th>Address</th>
+            <th>Status</th>
+        </tr>
+    </thead></table>
+    </div>
+    </div>
+  </div>
+  </section>
+<script>
+$(document).ready(function (){
+$.fn.dataTable.ext.errMode = 'throw';
+    var table = $('#mn').DataTable({
+
+      'ajax': {
+          'url': "/api/mymn",
+          'dataSrc': ''
+
+      },
+      "language": {
+        "emptyTable": "You have no masternodes yet",
+    },
+      "columns": [
+            { "data": "alias" },
+            { "data": "address" },
+            { "data": "status"},
+           
+        ],
+"order": [[ 0, "asc" ]],
+    });
+     setInterval( function () {
+    table.ajax.reload( null, false );
+}, 10000 );
+});
+
+</script>
+{% include 'inc/footer.html' %}
