@@ -2,5 +2,4 @@ Flask==2.0.3
 python_bitcoinrpc==1.0
 requests==2.25.1
 simplejson==3.17.6
-tqdm==4.63.1
 websockets==10.2

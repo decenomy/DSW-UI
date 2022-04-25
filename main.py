@@ -5,7 +5,6 @@ from dswutils.bootstrap import *
 import sys, io
 import simplejson as json
 import subprocess
-import time
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
