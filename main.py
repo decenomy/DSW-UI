@@ -6,6 +6,7 @@ import sys, io
 import simplejson as json
 import subprocess
 import requests
+import platform
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
@@ -16,6 +17,7 @@ RPC CONFIG
 with open('settings.json') as json_file:
     app_settings = json.load(json_file)
 
+pit = platform.system()
 
 
 @app.route('/')
@@ -51,8 +53,12 @@ def login():
                         session['host'] = c["host"]
                         session['port'] = c["rpcport"]
                         session['coin'] = selected_coin
-                        process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
-                        process = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
+                        if pit == "Windows":
+                            process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                            process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
+                        else:
+                            process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                            process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
                         msg = 'Connected! You will be redirected in a few seconds...'
                         break
             except Exception as e:

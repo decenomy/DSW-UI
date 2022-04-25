@@ -1,9 +1,12 @@
 {% include 'inc/header.html' %}  
   <section class="section">
-    <div class="container">
+    <div class="container" style="text-align:center">
+       <img src="{{ url_for('static', filename='logo.svg') }}" width="112" height="28" >
       <h1 class="title">
-        DSW UI
+        Decenomy Standard Wallet UI
       </h1>
+    </div>
+    <div class="container">
       <div class="box">
       <form method="POST" id="loginform">
       <div class="field">
