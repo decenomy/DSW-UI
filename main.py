@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, Response
 from coinsrpc.BitcoinLike import *
 from datetime import datetime
+from dswutils.bootstrap import *
+import sys, io
 import simplejson as json
 import subprocess
+import time
 
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
@@ -78,6 +81,27 @@ def receive():
 @app.route('/send')
 def send():
     return render_template('send.html')
+
+@app.route('/bootstrap')
+def boot():
+    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    coin.s()
+    return render_template('bootstrap.html')
+
+@app.route('/bootstraplog')
+def progress():
+    coin = session['coin']
+    for c in app_settings["coins"]:
+        if c["ticker"] == coin:
+            coin_name = c["name"].lower()
+            break
+    def getstatus():
+        yield "data:Downloading bootstrap... Please wait..\n\n"
+        bdownload("https://explorer.decenomy.net/bootstraps/"+coin+"/bootstrap.zip", "bootstrap.zip")
+        yield "data:Extracting....\n\n"
+        wipe(coin_name)
+        yield "data:Done! Please restart your wallet\n\n"
+    return Response(getstatus(), mimetype='text/event-stream')
 
 @app.route('/api/listtxs')
 def listtxs():

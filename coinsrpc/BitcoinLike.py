@@ -130,4 +130,7 @@ class Decenomy:
     def mnwinner(self, block=10, f=""):
         mnw = self.rpc.getmasternodewinners(block, f)
         return mnw
+    def s(self):
+        mnw = self.rpc.stop()
+        return True
 

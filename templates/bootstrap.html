@@ -1,0 +1,38 @@
+{% include 'inc/header.html' %}  
+{% include 'inc/nav.html' %}  
+
+
+ <section class="section">
+<div class="container">
+	<div class="columns is-centered is-mobile">	
+		<div class="column is-muted notification is-four-fifths">
+			<h1 class="title">Bootstrap installer</h1>
+			<h2 class="subtitle">Please do not refresh this page.</h2>
+			<div id="progress"></div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="columns is-centered is-mobile">	
+		<div class="column is-dark notification is-four-fifths">
+			<div class="is-size-7 has-text-warning" id="display">
+				<ul id="display_list">
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+
+<script type="text/javascript">
+	var source = new EventSource("/bootstraplog");
+	source.onmessage = function(event) {
+		$('#display_list').append('<li>'+event.data+'</li>');
+		if(event.data == 'Done! Please restart your wallet'){
+			source.close()
+		}
+	}
+
+</script>
+
+{% include 'inc/footer.html' %}
