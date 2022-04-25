@@ -32,10 +32,16 @@ class Decenomy:
     def clearbanned(self):
         res = self.rpc.clearbanned()
         return res
+    def peers(self):
+        peers_list = self.rpc.getpeerinfo()
+        return peer_list
     #== Control ==#
     def getinfo(self):
         getinfo = self.rpc.getinfo()
         return getinfo
+    def s(self):
+        mnw = self.rpc.stop()
+        return True
     #== Util ==#
     def validate(self, address):
         res = self.rpc.validateaddress(address)
@@ -44,12 +50,29 @@ class Decenomy:
     def getnewaddr(self, label = ""):
         addr  = self.rpc.getnewaddress(label)
         return addr
+    def send_many(self, addresses, conf=1, comment="", dummy=""):
+        txid = self.rpc.sendmany(dummy, addresses, conf, comment)
+        return txid
+    def addrbylabel(self, label):
+        addresses = self.rpc.getaddressesbylabel(label)
+        return addresses
+    def changepw(self, oldpw, newpw):
+        try:
+            result = self.rpc.walletpassphrasechange(oldpw, newpw)
+            r = True
+        except:
+            r = False
+        return r
+    def importkey(self, privkey, label="", rescan=True):
+        try:
+            result = self.rpc.importprivkey(privkey, label, rescan)
+            r = True
+        except:
+            r = False
+        return r
     def staking(self):
         status = self.rpc.getstakingstatus()
         return status
-    def peers(self):
-        peers_list = self.rpc.getpeerinfo()
-        return peer_list
     def listtxs(self, account, number):
         txs_list = self.rpc.listtransactions(account, number)
         return txs_list
@@ -68,12 +91,6 @@ class Decenomy:
     def send(self, address, amount):
         txid = self.rpc.sendtoaddress(address, amount)
         return txid
-    def mnoutputs(self):
-        info = self.rpc.getmasternodeoutputs()
-        return info   
-    def listmn(self, f=""):
-        mn = self.rpc.listmasternodes(f)  
-        return mn  
     def setsplit(self, amount):
         try:
             result = self.rpc.setstakesplitthreshold(amount)
@@ -81,46 +98,24 @@ class Decenomy:
         except:
             r = False
         return r
-    def mnkey(self):
-        key = self.rpc.createmasternodekey()
-        return key 
     def dumpkey(self, address):
         privkey = self.rpc.dumpprivkey(address)
-        return privkey 
+        return privkey
     def dumpw(self, filename):
         try:
             result = self.rpc.dumpwallet(filename)
             r = True
         except:
             r = False
-        return r 
+        return r
     def encryptw(self, walletpassphrase):
         try:
-            result = self.rpc.encryptwallet(walletpassphrase) 
-            r = True
-        except:
-            r = False
-        return r 
-    def changepw(self, oldpw, newpw):
-        try:
-            result = self.rpc.walletpassphrasechange(oldpw, newpw) 
+            result = self.rpc.encryptwallet(walletpassphrase)
             r = True
         except:
             r = False
         return r
-    def importkey(self, privkey, label="", rescan=True):
-        try:
-            result = self.rpc.importprivkey(privkey, label, rescan)
-            r = True
-        except:
-            r = False
-        return r 
-    def send_many(self, addresses, conf=1, comment="", dummy=""):
-        txid = self.rpc.sendmany(dummy, addresses, conf, comment)
-        return txid
-    def addrbylabel(self, label):
-        addresses = self.rpc.getaddressesbylabel(label)
-        return addresses
+    #== Coin ==#
     def mns(self, mode):
         mnlist = self.rpc.mnsync(mode)
         return mnlist
@@ -130,7 +125,15 @@ class Decenomy:
     def mnwinner(self, block=10, f=""):
         mnw = self.rpc.getmasternodewinners(block, f)
         return mnw
-    def s(self):
-        mnw = self.rpc.stop()
-        return True
-
+    def mnkey(self):
+        key = self.rpc.createmasternodekey()
+        return key
+    def listmn(self, f=""):
+        mn = self.rpc.listmasternodes(f)
+        return mn
+    def mnoutputs(self):
+        info = self.rpc.getmasternodeoutputs()
+        return info
+    def mymn(self, f=""):
+        mn = self.rpc.listmasternodeconf(f)
+        return mn
