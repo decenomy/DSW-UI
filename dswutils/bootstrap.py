@@ -15,9 +15,9 @@ def wipe(coin):
     plt = platform.system()
     if  plt == "Windows":
         home = os.path.expanduser("~")
-        for i in listdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" ):
+        for i in os.listdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" ):
             os.remove(os.path.join(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" , i))
-        for i in listdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "chainstate" ):
+        for i in os.listdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "chainstate" ):
             os.remove(os.path.join(home + "\\AppData\\Roaming\\" + coin.capitalize() + "chainstate" , i))
         os.rmdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "blocks" )
         os.rmdir(home + "\\AppData\\Roaming\\" + coin.capitalize() + "chainstate" )
@@ -26,7 +26,7 @@ def wipe(coin):
         os.remove("bootstrap.zip")
     elif plt == "Linux":
         home = os.path.expanduser("~")
-        os.system("rm -rf " + home + "/.." + coin + "/chainstate")
+        os.system("rm -rf " + home + "/." + coin + "/chainstate")
         os.system("rm -rf " + home + "/." + coin + "/blocks")
         with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
             zip_ref.extractall(home + "/." + coin + "/")
