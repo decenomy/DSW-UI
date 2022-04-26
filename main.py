@@ -43,24 +43,22 @@ def login():
         selected_coin = request.form.get("coinselect")
         if app_pass == app_settings["access_token"]:
             try:
-                for c in app_settings["coins"]:
-                    if c["ticker"] == selected_coin:
-                        coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
-                        test_conn = coin.getinfo()
-                        session['loggedin'] = True
-                        session['user'] = c["rpcuser"]
-                        session['pass'] = c["rpcpassword"]
-                        session['host'] = c["host"]
-                        session['port'] = c["rpcport"]
-                        session['coin'] = selected_coin
-                        if pit == "Windows":
-                            process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
-                            process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
-                        else:
-                            process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
-                            process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
-                        msg = 'Connected! You will be redirected in a few seconds...'
-                        break
+                c = app_settings["coins"][selected_coin]
+                coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
+                test_conn = coin.getinfo()
+                session['loggedin'] = True
+                session['user'] = c["rpcuser"]
+                session['pass'] = c["rpcpassword"]
+                session['host'] = c["host"]
+                session['port'] = c["rpcport"]
+                session['coin'] = selected_coin
+                if pit == "Windows":
+                    process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
+                else:
+                    process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
+                msg = 'Connected! You will be redirected in a few seconds...'
             except Exception as e:
                 msg = str(e)
         else:
@@ -111,10 +109,8 @@ def boot():
 @app.route('/bootstraplog')
 def progress():
     coin = session['coin']
-    for c in app_settings["coins"]:
-        if c["ticker"] == coin:
-            coin_name = c["name"].lower()
-            break
+    c = app_settings["coins"][selected_coin]
+    coin_name = c["name"].lower()
     def getstatus():
         yield "data:Downloading bootstrap... Please wait..\n\n"
         bdownload("https://explorer.decenomy.net/bootstraps/"+coin+"/bootstrap.zip", "bootstrap.zip")

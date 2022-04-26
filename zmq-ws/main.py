@@ -5,7 +5,10 @@ import struct
 import websockets
 import asyncio
 
-port = 29000
+with open('settings.json') as json_file:
+    app_settings = json.load(json_file)
+
+port = app_settings["zmq_port"]
 
 zmqContext = zmq.Context()
 zmqSubSocket = zmqContext.socket(zmq.SUB)

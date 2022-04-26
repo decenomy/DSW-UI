@@ -20,9 +20,8 @@ async def chaininfo(websocket):
     except websockets.ConnectionClosedOK:
         name = ''
         pass
-    for c in app_settings["coins"]:
-        if c["ticker"] == ticker:
-            coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
+    c = app_settings["coins"][selected_coin]
+    coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
 
     if name.startswith("blockhash") == True:
         bhash = name.split(":")[1]
