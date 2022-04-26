@@ -4,6 +4,7 @@ import zmq
 import struct
 import websockets
 import asyncio
+import simplejson as json
 
 with open('settings.json') as json_file:
     app_settings = json.load(json_file)
