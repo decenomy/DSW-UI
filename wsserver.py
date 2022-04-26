@@ -40,6 +40,8 @@ async def chaininfo(websocket):
     w_info = coin.getinfo()
     websockets.broadcast(USERS, json.dumps({"type":"getinfo", "data":w_info}))
 
+    mn = coin.mncount()
+    websockets.broadcast(USERS, json.dumps({"type":"masternodes", "data": {"count":len(mn)}}))
 
     USERS.remove(websocket)
 

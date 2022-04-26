@@ -68,26 +68,6 @@ $.fn.dataTable.ext.errMode = 'throw';
      
 });
 
-
-
-function fetchmn(){
- $.ajax({
-  url: '/api/mntotal',
-  type: 'GET',
-  dataType: "json",
-  success: function(response){
-      $("#mntotal").html('Total: '+response.total);
-      
-
-  }
- });
-}
-
-$(document).ready(function(){
- setInterval(fetchmn,60000);
-});
-
-
 var websocket = new WebSocket("ws://localhost:8765");
 
 websocket.onmessage = function (event) {
@@ -114,6 +94,10 @@ websocket.onmessage = function (event) {
       $("#balance").html('Balance: '+balance.toFixed(8));
       $("#conn").html('Connections: '+connections);
       $("#stake").html('Staking Status: '+staking);
+      }
+    else if (mydata["type"] == "masternodes") {
+      var count = mydata["data"]["count"];
+      $("#mntotal").html('Total: '+count);
       }
   }
 }
