@@ -20,28 +20,26 @@ Edit settings.json file with your own password and rpc configurations:
 
 ```
 {
-    "access_token": "my_password",
-    "coins": [
-        {
-            "ticker": "SAPP",
-            "name": "Sapphire",
-            "rpcuser": "sapprpc",
-            "rpcpassword": "sapprpc",
-            "rpcport": 11111,
-            "host": "localhost"
-        },
-        {
-            "ticker": "DASHD",
-            "name": "Dashdiamond",
-            "rpcuser": "dashdrpc",
-            "rpcpassword": "dasdrpc",
-            "rpcport": 22222,
-            "host": "localhost"
-        },
-        {
-        	...
-        }
-    ]
+   "access_token":"my_password",
+   "zmq_port":29000,
+   "coins":{
+      "SAPP":{
+         "ticker":"SAPP",
+         "name":"Sapphire",
+         "rpcuser":"sapprpc",
+         "rpcpassword":"sapprpc",
+         "rpcport":11111,
+         "host":"localhost"
+      },
+      "DASHD":{
+         "ticker":"DASHD",
+         "name":"Dashdiamond",
+         "rpcuser":"dashdrpc",
+         "rpcpassword":"dasdrpc",
+         "rpcport":22222,
+         "host":"localhost"
+      }
+   }
 }
 
 ```
