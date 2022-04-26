@@ -131,7 +131,7 @@ def progress():
     if is_logged_in() == False:
         return redirect(url_for('index'))
     coin = session['coin']
-    c = app_settings["coins"][selected_coin]
+    c = app_settings["coins"][coin]
     coin_name = c["name"].lower()
     def getstatus():
         yield "data:Downloading bootstrap... Please wait..\n\n"
