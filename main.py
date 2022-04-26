@@ -19,6 +19,13 @@ with open('settings.json') as json_file:
 
 pit = platform.system()
 
+def is_logged_in():
+    if not session:
+        return False
+    elif session['loggedin']  == True:
+        return True
+    else:
+        return False
 
 @app.route('/')
 def index():
@@ -72,6 +79,8 @@ def login():
 
 @app.route('/dash')
 def dash():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     mn = coin.mncount()
@@ -85,30 +94,42 @@ def dash():
 
 @app.route('/receive')
 def receive():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     addr = coin.getnewaddr()
     return render_template('receive.html', addr=addr)
 
 @app.route('/send')
 def send():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     return render_template('send.html')
 
 @app.route('/mnexplorer')
 def mnexplorer():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     return render_template('mnexplorer.html')
 
 @app.route('/mymn')
 def listmymn():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     return render_template('mymn.html')
 
 @app.route('/bootstrap')
 def boot():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     coin.s()
     return render_template('bootstrap.html')
 
 @app.route('/bootstraplog')
 def progress():
+    if is_logged_in() == False:
+        return redirect(url_for('index'))
     coin = session['coin']
     c = app_settings["coins"][selected_coin]
     coin_name = c["name"].lower()
@@ -122,6 +143,8 @@ def progress():
 
 @app.route('/api/listtxs')
 def listtxs():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.listtxs("*", 500)
     for tx in info:
@@ -131,24 +154,32 @@ def listtxs():
 
 @app.route('/api/getinfo')
 def latestb():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     return json.dumps(info)
 
 @app.route('/api/mntotal')
 def mns():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mncount()
     return json.dumps(info)
 
 @app.route('/api/mymn')
 def mymns():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mymn()
     return json.dumps(info)   
 
 @app.route('/api/mnlist')
 def masternodeslist():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.listmn()
     for i in info:
@@ -158,6 +189,8 @@ def masternodeslist():
 
 @app.route('/api/sendtoaddress', methods =['POST'])
 def sendto():
+    if is_logged_in() == False:
+        return json.dumps({"error":"Unauthorized"})
     msg = ''
     if request.method == 'POST' and 'address' in request.form and 'amount' in request.form and 'passphrase' in request.form:
         coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
