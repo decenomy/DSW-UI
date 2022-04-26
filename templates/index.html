@@ -16,7 +16,7 @@
        
         <select id="coinselect" name="coinselect">
           {% for coin in app_settings["coins"] %}
-          <option value="{{ coin.ticker }}">{{ coin.ticker }}</option>
+          <option value="{{ coin }}">{{ coin }}</option>
           {% endfor %}
         </select>
       </div>
