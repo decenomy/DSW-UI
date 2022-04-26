@@ -16,15 +16,21 @@ def wipe(coin):
     plt = platform.system()
     if  plt == "Windows":
         home = os.path.expanduser("~")
-        shutil.rmtree(home + "\\AppData\\Roaming\\" + coin.capitalize() + "\\blocks" )
-        shutil.rmtree(home + "\\AppData\\Roaming\\" + coin.capitalize() + "\\chainstate" )
+        try:
+            shutil.rmtree(home + "\\AppData\\Roaming\\" + coin.capitalize() + "\\blocks" )
+            shutil.rmtree(home + "\\AppData\\Roaming\\" + coin.capitalize() + "\\chainstate" )
+        except:
+            pass
         with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
             zip_ref.extractall(home + "\\AppData\\Roaming\\" + coin.capitalize())
         os.remove("bootstrap.zip")
     elif plt == "Linux":
         home = os.path.expanduser("~")
-        os.system("rm -rf " + home + "/." + coin + "/chainstate")
-        os.system("rm -rf " + home + "/." + coin + "/blocks")
+        try:
+            os.system("rm -rf " + home + "/." + coin + "/chainstate")
+            os.system("rm -rf " + home + "/." + coin + "/blocks")
+        except:
+            pass
         with zipfile.ZipFile("bootstrap.zip", "r") as zip_ref:
             zip_ref.extractall(home + "/." + coin + "/")
         os.remove("bootstrap.zip")

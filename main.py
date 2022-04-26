@@ -85,10 +85,14 @@ def dash():
     info = coin.getinfo()
     mn = coin.mncount()
     mynodes = len(coin.mymn())
-    price = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/EUR?param=bid").json()
-    p = round(price["response"]["rate"], 3)
-    priceb = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/BTC?param=bid").json()
-    pb = round(priceb["response"]["rate"], 8)
+    try:
+        price = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/EUR?param=bid").json()
+        p = round(price["response"]["rate"], 3)
+        priceb = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + session["coin"] + "/pairs/BTC?param=bid").json()
+        pb = round(priceb["response"]["rate"], 8)
+    except:
+        p = 0
+        pb = 0
 
     return render_template('dash.html', info=info, mn=mn, mynodes=mynodes, p=p, pb=pb)
 
