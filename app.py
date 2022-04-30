@@ -63,7 +63,6 @@ def login():
         if app_pass == app_settings["access_token"]:
             try:
                 c = app_settings["coins"][selected_coin]
-                print(c)
                 coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
                 test_conn = coin.getinfo()
                 session['loggedin'] = True
