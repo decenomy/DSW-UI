@@ -52,12 +52,6 @@ if "app.py" in sys.argv[0]:
 """
 --------------------------- REST CALLS -----------------------------
 """
-# Remove and replace with your own
-@app.route("/example")
-def example():
-
-  # See /src/components/App.js for frontend call
-  return jsonify("Example response from Flask! Learn more in /app.py & /src/components/App.js")
 
 @app.route('/login', methods =['POST'])
 def login():
@@ -84,16 +78,16 @@ def login():
                 else:
                     process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
-                msg = 'Connected! You will be redirected in a few seconds...'
+                msg = {'success' : 'Connected! You will be redirected in a few seconds...'}
             except Exception as e:
-                msg = str(e)
+                msg = {'error': str(e) }
         else:
-            msg = 'Error, incorrect password'
+            msg = {'error': 'incorrect password'}
     elif request.method == 'POST':
-        msg = 'Error. All fields are mandatory'
+        msg = {'error' : 'All fields are mandatory'}
     else:
-        msg = 'Error'
-    return msg
+        msg = {'error' : 'Invalid request'}
+    return json.dumps(msg)
 
 @app.route('/api/getinfo')
 def latestb():
@@ -158,14 +152,14 @@ def sendto():
             try:
                 unlock = coin.unlock(request.form["passphrase"], 5)
                 txid = coin.send(request.form["address"], request.form["amount"])
-                msg = "Success! Transaction id: " + txid
+                msg = {"success" : "Transaction id: " + txid }
             except Exception as e:
                 msg = str(e)
         else:
-            msg = "Invalid address"
+            msg = {"error":"Invalid address"}
     else:
-        msg = "All fields are mandatory"
-    return msg
+        msg = {"error":"All fields are mandatory"}
+    return json.dumps(msg)
 
 """
 -------------------------- APP SERVICES ----------------------------
