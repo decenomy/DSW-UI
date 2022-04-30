@@ -7,8 +7,6 @@ import Titlebar from 'components/titlebar/Titlebar';
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
 
-import 'bulma/css/bulma.min.css';
-
 
 function App() {
   const [availableCoins, setAvailableCoins] = useState([]);
