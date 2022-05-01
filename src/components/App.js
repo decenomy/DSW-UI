@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import LoginForm from 'components/forms/LoginForm';
 import Titlebar from 'components/titlebar/Titlebar';
-
+import Navbar from './navbar/Navbar';
 
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
@@ -15,6 +15,9 @@ function App() {
     <Fragment>
       <Titlebar />
       <div className={ styles.app }>
+      <div className='navigation'>
+        <Navbar />
+      </div>
         <header className={ styles['app-header'] }>
           <img src={ logo } className={ styles['app-logo'] } alt="logo" />
           <section className="section">
