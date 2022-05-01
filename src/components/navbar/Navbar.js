@@ -5,14 +5,7 @@ import logo from 'logo.svg';
 
 export function Navbar() {
   return (
-    /*
-    <nav>
-    <ul>
-      <li><Link to='/'>Home</Link></li>
-      <li><Link to='/dashboard'>Roster</Link></li>
-    </ul>
-  </nav>
-*/
+
 <nav className="navbar" role="navigation" aria-label="main navigation">
   <div className="navbar-brand">
     <a className="navbar-item" href="#">
