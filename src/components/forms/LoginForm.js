@@ -1,5 +1,7 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { get, post } from 'utils/requests';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 export function LoginForm() {
 
@@ -21,7 +23,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => alert(JSON.stringify(response)),
+        (response) => toast.dark(JSON.stringify(response)),
         (error) => console.error(error)
       )
     }
@@ -39,6 +41,7 @@ export function LoginForm() {
 
   return (
     <form id="loginform" onSubmit={onSubmit} >
+      <ToastContainer />
       <div className="field">
       <label className="label">Wallet</label>
       <div className="control">

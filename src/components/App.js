@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { Fragment } from 'react';
 
 import LoginForm from 'components/forms/LoginForm';
 import Titlebar from 'components/titlebar/Titlebar';
-import { Navbar } from './navbar/Navbar';
+
 
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
