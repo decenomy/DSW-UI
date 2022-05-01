@@ -56,10 +56,9 @@ if "app.py" in sys.argv[0]:
 @app.route('/login', methods =['POST'])
 def login():
     msg = ''
-
-    if request.method == 'POST' and 'password' in request.form:
-        app_pass = request.form["password"]
-        selected_coin = request.form.get("coinselect")
+    if request.method == 'POST' and 'password' in request.json and 'coin' in request.json:
+        app_pass = request.json["password"]
+        selected_coin = request.json["coin"]
         if app_pass == app_settings["access_token"]:
             try:
                 c = app_settings["coins"][selected_coin]
