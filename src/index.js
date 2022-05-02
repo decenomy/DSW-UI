@@ -5,16 +5,13 @@ import * as serviceWorker from 'serviceWorker';
 import App from 'components/App';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
 import 'bulma/css/bulma.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 ReactDOM.render(
   <React.StrictMode> 
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
