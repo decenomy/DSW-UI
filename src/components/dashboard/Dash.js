@@ -1,11 +1,15 @@
 import React from 'react';
+import Navbar from 'components/navbar/Navbar';
+import Titlebar from 'components/titlebar/Titlebar';
 
 export function Dash() {
 
 
 return (
-
-    <h1>test</h1>
+    <div className='container'>
+    <Titlebar />
+    <Navbar />
+    </div>
     );
 }
 
