@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { get, post } from 'utils/requests';
 import { ToastContainer, toast } from 'react-toastify';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 export function LoginForm() {
