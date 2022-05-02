@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { get, post } from 'utils/requests';
 import { ToastContainer, toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export function LoginForm() {
-
+    const navigate = useNavigate();
     const [text, setText] = useState('');
     const [coin, setCoin] = useState();
     
@@ -24,7 +24,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"])  }  else { toast.success(response["success"])  } },
+        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"]); }  else { toast.success(response["success"]);  navigate('/dash')  } },
         (error) => console.error(error)
       )
     }

@@ -43,6 +43,7 @@ function App() {
   <MemoryRouter>
     <Routes>
       <Route path="/" element={<IndexPage />} />
+      <Route path="/dash" element={<Dashboard />} />
     </Routes>
   </MemoryRouter>
   );
