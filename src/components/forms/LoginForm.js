@@ -24,7 +24,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"]); }  else { toast.success(response["success"]);  navigate('/dash')  } },
+        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"]); }  else { toast.success(response["success"]);  setTimeout(() => { navigate('/dash')  }, 2000); } },
         (error) => console.error(error)
       )
     }
