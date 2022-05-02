@@ -24,7 +24,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => { if  (response.hasOwnProperty("error") )  { toast.dark(response["error"])  }  else { toast.dark(response["success"])  } },
+        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"])  }  else { toast.success(response["success"])  } },
         (error) => console.error(error)
       )
     }
