@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import LoginForm from 'components/forms/LoginForm';
 import Titlebar from 'components/titlebar/Titlebar';

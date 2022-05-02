@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { get, post } from 'utils/requests';
 import { ToastContainer, toast } from 'react-toastify';
+import { Redirect } from 'react-router-dom';
 
 
 export function LoginForm() {
@@ -23,7 +24,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => toast.dark(JSON.stringify(response)),
+        (response) => { if  (response.hasOwnProperty("error") )  { toast.dark(response["error"])  }  else { toast.dark(response["success"])  } },
         (error) => console.error(error)
       )
     }
