@@ -43,7 +43,7 @@ export const post = (
     method: 'POST',
     headers: { 'Content-type': 'application/json' }
   })
-    .then((response) => response.json())
+    .then((response) =>  response.json()  )
     .then(callback)
     .catch((error) => (errorCallback ? errorCallback(error) : console.error(error)));
 };

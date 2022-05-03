@@ -6,3 +6,4 @@ requests==2.25.1
 simplejson==3.17.6
 websockets==10.2
 pyzmq==22.3.0
+flask-jwt-extended==4.4.0
