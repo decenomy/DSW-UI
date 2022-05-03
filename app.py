@@ -63,7 +63,6 @@ def login():
         if app_pass == app_settings["access_token"]:
             try:
                 c = app_settings["coins"][selected_coin]
-                print(c)
                 coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
                 test_conn = coin.getinfo()
                 additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"]}
@@ -165,7 +164,6 @@ def sendto():
 def quit():
   shutdown = request.environ.get("werkzeug.server.shutdown")
   shutdown()
-
   return
 
 
