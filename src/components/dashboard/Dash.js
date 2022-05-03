@@ -32,6 +32,7 @@ useEffect(() => {
     };
 }, []);
 
+
 useEffect(() => {
     if (!ws.current) return;
 
@@ -41,13 +42,11 @@ useEffect(() => {
         
         if ('type' in mydata) {
           if (mydata["type"] == "block") {
-            alert(mydata["data"]["height"]);
-            //var block = mydata["data"]["height"];
-            //$("#blocks").html('Latest block: '+block);
+            const updatedGetInfo = [...getInfo];
+            updatedGetInfo["blocks"] = mydata["data"]["height"];
+            setGetInfo(updatedGetInfo);
             }
         }
-
-        //alert(message);
     };
 }, [isPaused]);
 
@@ -58,17 +57,17 @@ return (
     <div className="columns">
       <div className="column">
       <div className="box">
-        <p id="blocks">Latest block: {getInfo["blocks"]} </p>
+        <p>Latest block: {getInfo["blocks"]}</p>
         <p>Wallet version: {getInfo["version"]}</p>
-        <p id="conn">Connections: {getInfo["connections"]}</p>
-        <p id="stake">Staking status: {getInfo["staking status"]}</p>
-        <p id ="balance">Balance: {getInfo["balance"]}</p>
+        <p>Connections: {getInfo["connections"]}</p>
+        <p>Staking status: {getInfo["staking status"]}</p>
+        <p>Balance: {getInfo["balance"]}</p>
       </div>
       </div>
       <div className="column">
       <div className="box">
-        <p id="mymn">My masternodes: </p>
-        <p id="mntotal">Total: </p>
+        <p>My masternodes: </p>
+        <p>Total: </p>
       </div>
       </div>
       <div className="column">
