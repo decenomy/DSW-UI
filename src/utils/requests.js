@@ -23,7 +23,6 @@ export const get = (route, callback, errorCallback) => {
     .catch((error) => (errorCallback ? errorCallback(error) : console.error(error)));
 };
 
-
 /**
 * @description - Helper POST method for sending requests to and from the Python/Flask services.
 * @param body - request body of data that you want to pass.

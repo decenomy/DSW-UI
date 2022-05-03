@@ -69,26 +69,18 @@ def login():
         if app_pass == app_settings["access_token"]:
             try:
                 c = app_settings["coins"][selected_coin]
+                print(c)
                 coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
                 test_conn = coin.getinfo()
-                '''
-                session['loggedin'] = True
-                session['user'] = c["rpcuser"]
-                session['pass'] = c["rpcpassword"]
-                session['host'] = c["host"]
-                session['port'] = c["rpcport"]
-                session['coin'] = selected_coin
-                '''
                 additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"]}
-                access_token = create_access_token(identity=selected_coin, additional_claims=additional_claims)
-                print(access_token)
+                access_token = create_access_token(identity=c["ticker"], additional_claims=additional_claims)
                 if pit == "Windows":
-                    process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process = subprocess.Popen(['python.exe', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
                 else:
-                    process = subprocess.Popen(['python3', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process = subprocess.Popen(['python3', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
-                msg = {'success' : 'Connected! You will be redirected in a few seconds...'}
+                msg = {'success' : 'Connected! You will be redirected in a few seconds...', 'token': access_token}
             except Exception as e:
                 msg = {'error': str(e) }
         else:

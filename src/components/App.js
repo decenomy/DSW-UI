@@ -8,7 +8,6 @@ import Dash from './dashboard/Dash';
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
 
-
 const IndexPage = () => {
   return (<Fragment>
     <Titlebar />

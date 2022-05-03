@@ -24,7 +24,7 @@ export function LoginForm() {
       post(
         JSON.stringify(req),
         'login',
-        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"]); }  else { toast.success(response["success"]); localStorage.setItem('variableName', 'bla'); setTimeout(() => { navigate('/dash')  }, 2000); } },
+        (response) => { if  (response.hasOwnProperty("error") )  { toast.error(response["error"]); }  else { toast.success(response["success"]); localStorage.setItem('Authorization', response["token"]); setTimeout(() => { navigate('/dash')  }, 2000); } },
         (error) => console.error(error)
       )
     }
