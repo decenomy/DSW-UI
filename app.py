@@ -1,6 +1,10 @@
 import sys
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session, Response
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 from coinsrpc.BitcoinLike import *
 from datetime import datetime
 from dswutils.bootstrap import *
@@ -17,6 +21,9 @@ import platform
 app = Flask(__name__)
 app.secret_key = 'Decenomy2022'
 app_config = {"host": "0.0.0.0", "port": sys.argv[1]}
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
 
 with open('settings.json') as json_file:
     app_settings = json.load(json_file)
@@ -64,12 +71,16 @@ def login():
                 c = app_settings["coins"][selected_coin]
                 coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
                 test_conn = coin.getinfo()
+                '''
                 session['loggedin'] = True
                 session['user'] = c["rpcuser"]
                 session['pass'] = c["rpcpassword"]
                 session['host'] = c["host"]
                 session['port'] = c["rpcport"]
                 session['coin'] = selected_coin
+                '''
+                additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"]}
+                access_token = create_access_token(identity=selected_coin, additional_claims=additional_claims)
                 if pit == "Windows":
                     process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
@@ -89,8 +100,11 @@ def login():
 
 @app.route('/api/getinfo')
 def latestb():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.getinfo()
     return json.dumps(info)
@@ -102,8 +116,11 @@ def coinslist():
 
 @app.route('/api/listtxs')
 def listtxs():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.listtxs("*", 500)
     for tx in info:
@@ -113,24 +130,34 @@ def listtxs():
 
 @app.route('/api/mntotal')
 def mns():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
+
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mncount()
     return json.dumps(info)
 
 @app.route('/api/mymn')
 def mymns():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.mymn()
     return json.dumps(info)   
 
 @app.route('/api/mnlist')
 def masternodeslist():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
     coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
     info = coin.listmn()
     for i in info:
@@ -140,8 +167,11 @@ def masternodeslist():
 
 @app.route('/api/sendtoaddress', methods =['POST'])
 def sendto():
+    @jwt_required()
+    '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
+    '''
     msg = ''
     if request.method == 'POST' and 'address' in request.form and 'amount' in request.form and 'passphrase' in request.form:
         coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
