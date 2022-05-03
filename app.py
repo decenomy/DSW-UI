@@ -81,6 +81,7 @@ def login():
                 '''
                 additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"]}
                 access_token = create_access_token(identity=selected_coin, additional_claims=additional_claims)
+                print(access_token)
                 if pit == "Windows":
                     process = subprocess.Popen(['python.exe', 'wsserver.py', session["coin"]], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
@@ -99,8 +100,8 @@ def login():
     return json.dumps(msg)
 
 @app.route('/api/getinfo')
+@jwt_required()
 def latestb():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
@@ -115,8 +116,8 @@ def coinslist():
     return coins
 
 @app.route('/api/listtxs')
+@jwt_required()
 def listtxs():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
@@ -129,8 +130,8 @@ def listtxs():
     return json.dumps(info)
 
 @app.route('/api/mntotal')
+@jwt_required()
 def mns():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
@@ -141,8 +142,8 @@ def mns():
     return json.dumps(info)
 
 @app.route('/api/mymn')
+@jwt_required()
 def mymns():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
@@ -152,8 +153,8 @@ def mymns():
     return json.dumps(info)   
 
 @app.route('/api/mnlist')
+@jwt_required()
 def masternodeslist():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
@@ -166,8 +167,8 @@ def masternodeslist():
     return json.dumps(info)
 
 @app.route('/api/sendtoaddress', methods =['POST'])
+@jwt_required()
 def sendto():
-    @jwt_required()
     '''
     if is_logged_in() == False:
         return json.dumps({"error":"Unauthorized"})
