@@ -17,7 +17,9 @@ const port = ipcRenderer.sendSync('get-port-number');
 * @memberof Requests
 */
 export const get = (route, callback, errorCallback) => {
-  fetch(`http://localhost:${port}/${route}`)
+  fetch(`http://localhost:${port}/${route}`, {
+    headers: { 'Content-type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('Authorization') }
+  })
     .then((response) => response.json())
     .then(callback)
     .catch((error) => (errorCallback ? errorCallback(error) : console.error(error)));
@@ -40,7 +42,7 @@ export const post = (
   fetch(`http://localhost:${port}/${route}`, {
     body,
     method: 'POST',
-    headers: { 'Content-type': 'application/json' }
+    headers: { 'Content-type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('Authorization') }
   })
     .then((response) =>  response.json()  )
     .then(callback)
