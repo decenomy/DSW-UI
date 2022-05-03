@@ -10,8 +10,7 @@ useEffect(() => {
     
     get(
         'api/getinfo',
-        (response) => alert(JSON.stringify(response)),
-        //(response) => setGetInfo(response),
+        (response) => setGetInfo(response),
         (error) => console.error(error)
     )
     }, []);
@@ -24,10 +23,10 @@ return (
       <div className="column">
       <div className="box">
         <p id="blocks">Latest block: {getInfo["blocks"]} </p>
-        <p>Wallet version: </p>
-        <p id="conn">Connections: </p>
-        <p id="stake">Staking status: </p>
-        <p id ="balance">Balance: </p>
+        <p>Wallet version: {getInfo["version"]}</p>
+        <p id="conn">Connections: {getInfo["connections"]}</p>
+        <p id="stake">Staking status: {getInfo["staking status"]}</p>
+        <p id ="balance">Balance: {getInfo["balance"]}</p>
       </div>
       </div>
       <div className="column">

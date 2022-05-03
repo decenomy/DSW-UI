@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from coinsrpc.BitcoinLike import *
@@ -30,13 +31,6 @@ with open('settings.json') as json_file:
 
 pit = platform.system()
 
-def is_logged_in():
-    if not session:
-        return False
-    elif session['loggedin']  == True:
-        return True
-    else:
-        return False
 
 """
 ---------------------- DEVELOPER MODE CONFIG -----------------------
@@ -94,11 +88,8 @@ def login():
 @app.route('/api/getinfo')
 @jwt_required()
 def latestb():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
-    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.getinfo()
     return json.dumps(info)
 
@@ -110,11 +101,8 @@ def coinslist():
 @app.route('/api/listtxs')
 @jwt_required()
 def listtxs():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
-    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.listtxs("*", 500)
     for tx in info:
         dt_object = datetime.fromtimestamp(tx["time"])
@@ -124,34 +112,24 @@ def listtxs():
 @app.route('/api/mntotal')
 @jwt_required()
 def mns():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
-
-    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.mncount()
     return json.dumps(info)
 
 @app.route('/api/mymn')
 @jwt_required()
 def mymns():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
-    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.mymn()
     return json.dumps(info)   
 
 @app.route('/api/mnlist')
 @jwt_required()
 def masternodeslist():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
-    coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.listmn()
     for i in info:
         dt_object = datetime.fromtimestamp(i["lastpaid"])
@@ -161,13 +139,10 @@ def masternodeslist():
 @app.route('/api/sendtoaddress', methods =['POST'])
 @jwt_required()
 def sendto():
-    '''
-    if is_logged_in() == False:
-        return json.dumps({"error":"Unauthorized"})
-    '''
     msg = ''
     if request.method == 'POST' and 'address' in request.form and 'amount' in request.form and 'passphrase' in request.form:
-        coin =  Decenomy(session['user'], session['pass'], session['host'], session['port'])
+        user_rpc = get_jwt()
+        coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
         valid = coin.validate(request.form["address"])
         if valid["isvalid"] == True:
             try:
