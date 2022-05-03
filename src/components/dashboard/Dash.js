@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { get } from 'utils/requests';
 import Navbar from 'components/navbar/Navbar';
 import Titlebar from 'components/titlebar/Titlebar';
@@ -14,6 +14,42 @@ useEffect(() => {
         (error) => console.error(error)
     )
     }, []);
+
+
+
+const [isPaused, setPause] = useState(false);
+const ws = useRef(null);
+
+useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8765");
+    ws.current.onopen = () => console.log("ws opened");
+    ws.current.onclose = () => console.log("ws closed");
+
+    const wsCurrent = ws.current;
+
+    return () => {
+        wsCurrent.close();
+    };
+}, []);
+
+useEffect(() => {
+    if (!ws.current) return;
+
+    ws.current.onmessage = e => {
+        if (isPaused) return;
+        const mydata = JSON.parse(e.data);
+        
+        if ('type' in mydata) {
+          if (mydata["type"] == "block") {
+            alert(mydata["data"]["height"]);
+            //var block = mydata["data"]["height"];
+            //$("#blocks").html('Latest block: '+block);
+            }
+        }
+
+        //alert(message);
+    };
+}, [isPaused]);
 
 return (
     <div className='container'>
