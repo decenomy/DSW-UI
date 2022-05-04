@@ -3,7 +3,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 
 // Electron modules
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 
 // Extra modules
 const getPort = require('get-port');
@@ -208,7 +208,8 @@ app.whenReady().then(async () => {
    * browserWindows object.
    */
   browserWindows.mainWindow = new BrowserWindow({
-    frame: false,
+    frame: true,
+    autoHideMenuBar: true,
     webPreferences: {
       contextIsolation: false,
       enableRemoteModule: true,
@@ -218,6 +219,13 @@ app.whenReady().then(async () => {
   });
 
   /**
+   * If using in production, remove the window menu completely
+   */
+  if(!isDevMode) {
+    Menu.setApplicationMenu(null);
+  }
+
+  /**
    * If not using in production, use the loading window
    * and run Flask in shell.
    */
@@ -225,7 +233,7 @@ app.whenReady().then(async () => {
     await installExtensions(); // React, Redux devTools
     browserWindows.loadingWindow = new BrowserWindow({ frame: false });
     createLoadingWindow().then(() => createMainWindow(port));
-    spawn(`python3 app.py ${port}`, { detached: true, shell: true, stdio: 'inherit' });
+    spawn(`python app.py ${port}`, { detached: true, shell: true, stdio: 'inherit' });
   }
 
   /**

@@ -71,8 +71,8 @@ def login():
                     process = subprocess.Popen(['python.exe', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
                     process2 = subprocess.Popen(['python.exe', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
                 else:
-                    process = subprocess.Popen(['python3', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
-                    process2 = subprocess.Popen(['python3', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process = subprocess.Popen(['python', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
+                    process2 = subprocess.Popen(['python', 'zmq-ws/main.py'], stdout=None, stderr=None, stdin=None, close_fds=True)
                 msg = {'success' : 'Connected! You will be redirected in a few seconds...', 'token': access_token}
             except Exception as e:
                 msg = {'error': str(e) }

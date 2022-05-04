@@ -1,16 +1,14 @@
-import React, { Fragment } from 'react';
-import { Link, MemoryRouter, Route, Routes } from "react-router-dom";
+import React, { } from 'react';
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import LoginForm from 'components/forms/LoginForm';
-import Titlebar from 'components/titlebar/Titlebar';
 import Dash from './dashboard/Dash';
 
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
 
 const IndexPage = () => {
-  return (<Fragment>
-    <Titlebar />
+  return (<>
     <div className={ styles.app }>
     <div className='navigation'>
     </div>
@@ -30,7 +28,7 @@ const IndexPage = () => {
       </section>
       </header>
     </div>
-  </Fragment>)
+  </>)
 };
 
 const Dashboard = () => {
