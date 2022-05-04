@@ -57,7 +57,7 @@ useEffect(() => {
             setGetInfo(updatedGetInfo);
             }
             else if (mydata["type"] == "transaction") {
-              alert("new tx");
+              console.log("new tx");
             }
             /*
             else if (mydata["type"] == "getinfo") {
@@ -69,7 +69,7 @@ useEffect(() => {
             }
             */
             else if (mydata["type"] == "masternodes") {
-              alert("mn");
+              console.log("mn");
             }
         }
     };
