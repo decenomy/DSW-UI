@@ -122,7 +122,23 @@ def mymns():
     user_rpc = get_jwt()
     coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
     info = coin.mymn()
-    return json.dumps(info)   
+    return json.dumps(info) 
+
+@app.route('/api/price')
+@jwt_required()
+def price():
+    current_coin = get_jwt_identity()
+    try:
+        price = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + current_coin + "/pairs/EUR?param=bid").json()
+        p = round(price["response"]["rate"], 3)
+        priceb = requests.get("https://explorer.decenomy.net/coreapi/v1/coins/" + current_coin + "/pairs/BTC?param=bid").json()
+        pb = round(priceb["response"]["rate"], 8)
+    except:
+        p = 0
+        pb = 0
+    price_info = {"coin": current_coin, "eur": p, "btc": pb}
+    
+    return json.dumps(price_info)   
 
 @app.route('/api/mnlist')
 @jwt_required()

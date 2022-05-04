@@ -6,6 +6,7 @@ import Titlebar from 'components/titlebar/Titlebar';
 export function Dash() {
 
 const [getInfo, setGetInfo] = useState([]);
+const [getPrice, setGetPrice] = useState([]);
 useEffect(() => {
     
     get(
@@ -14,6 +15,15 @@ useEffect(() => {
         (error) => console.error(error)
     )
     }, []);
+
+useEffect(() => {
+
+  get(
+      'api/price',
+      (response) => setGetPrice(response),
+      (error) => console.error(error)
+  )
+  }, []);
 
 
 
@@ -46,6 +56,21 @@ useEffect(() => {
             updatedGetInfo["blocks"] = mydata["data"]["height"];
             setGetInfo(updatedGetInfo);
             }
+            else if (mydata["type"] == "transaction") {
+              alert("new tx");
+            }
+            /*
+            else if (mydata["type"] == "getinfo") {
+            const updatedGetInfo = [...getInfo];
+            updatedGetInfo["staking status"] = mydata["data"]["staking status"];
+            updatedGetInfo["balance"] = mydata["data"]["balance"];
+            updatedGetInfo["connections"] = mydata["data"]["connections"];
+            setGetInfo(updatedGetInfo);
+            }
+            */
+            else if (mydata["type"] == "masternodes") {
+              alert("mn");
+            }
         }
     };
 }, [isPaused]);
@@ -72,8 +97,8 @@ return (
       </div>
       <div className="column">
       <div className="box">
-        <p>1  =  EUR</p>
-        <p>1  =  BTC</p>
+        <p>1 {getPrice["coin"]} = {getPrice["eur"]} EUR</p>
+        <p>1 {getPrice["coin"]} = {getPrice["btc"]} BTC</p>
       </div>
       </div>
 
