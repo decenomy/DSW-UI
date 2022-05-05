@@ -6,6 +6,8 @@ export function Dash() {
 
   const [getInfo, setGetInfo] = useState([]);
   const [getPrice, setGetPrice] = useState([]);
+  const [getMasternodes, setGetMasternodes] = useState([]);
+  const [getMyMasternodes, setGetMyMasternodes] = useState([]);
   useEffect(() => {
 
     get(
@@ -20,6 +22,24 @@ export function Dash() {
     get(
       'api/price',
       (response) => setGetPrice(response),
+      (error) => console.error(error)
+    )
+  }, []);
+
+  useEffect(() => {
+
+    get(
+      'api/mntotal',
+      (response) => setGetMasternodes(response),
+      (error) => console.error(error)
+    )
+  }, []);
+
+  useEffect(() => {
+
+    get(
+      'api/mymn',
+      (response) => setGetMyMasternodes(response),
       (error) => console.error(error)
     )
   }, []);
@@ -53,7 +73,6 @@ export function Dash() {
         if (mydata["type"] === "block") {
           const updatedGetInfo = {...getInfo};
           updatedGetInfo.blocks = mydata["data"]["height"];
-          console.log(updatedGetInfo);
           setGetInfo(updatedGetInfo);
         }
         else if (mydata["type"] === "transaction") {
@@ -67,11 +86,13 @@ export function Dash() {
         setGetInfo(updatedGetInfo);
         }
         else if (mydata["type"] === "masternodes") {
-          console.log("mn");
+          const updatedGetMasternodes = {...getMasternodes};
+          updatedGetMasternodes.total = mydata["data"]["total"];
+          setGetMasternodes(updatedGetMasternodes);
         }
       }
     };
-  }, [isPaused, getInfo]);
+  }, [isPaused, getInfo, getMasternodes]);
 
   const { blocks,
     version,
@@ -85,6 +106,10 @@ export function Dash() {
     eur,
     btc
   } = getPrice;
+
+  const {
+    total
+  } = getMasternodes;
 
   return (
     <div className='container'>
@@ -101,8 +126,8 @@ export function Dash() {
         </div>
         <div className="column">
           <div className="box">
-            <p>My masternodes: </p>
-            <p>Total: </p>
+            <p>My masternodes: {getMyMasternodes.length} </p>
+            <p>Total: {getMasternodes.total}</p>
           </div>
         </div>
         <div className="column">
