@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { get } from 'utils/requests';
 import Navbar from 'components/navbar/Navbar';
+import TableDash from 'components/tables/TableDash';
 
 export function Dash() {
 
@@ -111,6 +112,36 @@ export function Dash() {
     total
   } = getMasternodes;
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Type",
+        accessor: "category",
+      },
+      {
+        Header: "Transaction ID",
+        accessor: "txid",
+      },
+      {
+        Header: "Amount",
+        accessor: "amount",
+      },
+      {
+        Header: "Date",
+        accessor: "time",
+      },
+    ],
+    []
+  );
+
+  const [getTxs, setGetTxs] = useState([]);
+  useMemo(() => get(
+    'api/listtxs',
+    (response) => setGetTxs(response),
+    (error) => console.error(error)
+  ), []);
+ 
+
   return (
     <div className='container'>
       <Navbar />
@@ -140,15 +171,9 @@ export function Dash() {
       </div>
       <div className="columns">
         <div className="box">
-          <table id="txs" className="display table is-fullwidth is-hoverable" width="100%">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>TXID</th>
-                <th>Amount</th>
-                <th>Time</th>
-              </tr>
-            </thead></table>
+        <div>
+        <TableDash columns={columns} data={getTxs} />
+      </div>
         </div>
       </div>
     </div>
