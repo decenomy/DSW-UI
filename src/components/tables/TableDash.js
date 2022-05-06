@@ -13,7 +13,7 @@ export function TableDash({ columns, data }) {
 
     return (
 
-        <table {...getTableProps()} border="1">
+        <table className="table is-striped" {...getTableProps()} border="1">
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
