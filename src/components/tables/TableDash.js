@@ -22,7 +22,7 @@ export function TableDash({ columns, data }) {
     useTable({
       columns,
       data,
-      initialState: { pageIndex: 2 }
+      initialState: { pageIndex: 0 }
     },
     useSortBy,
     usePagination,

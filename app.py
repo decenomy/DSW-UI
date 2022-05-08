@@ -151,6 +151,15 @@ def masternodeslist():
         i["lastpaid"] = str(dt_object)
     return json.dumps(info)
 
+@app.route('/api/newaddr')
+@jwt_required()
+def newaddy():
+    user_rpc = get_jwt()
+    coin =  Decenomy(user_rpc['user'], user_rpc['pass'], user_rpc['host'], user_rpc['port'])
+    addr = coin.getnewaddr()
+    info = {"address": addr}
+    return json.dumps(info)
+
 @app.route('/api/sendtoaddress', methods =['POST'])
 @jwt_required()
 def sendto():

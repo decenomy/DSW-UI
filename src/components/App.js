@@ -3,6 +3,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import LoginForm from 'components/forms/LoginForm';
 import Dash from './dashboard/Dash';
+import ReceivePage from './transactions/ReceivePage';
 
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
@@ -35,12 +36,17 @@ const Dashboard = () => {
   return <Dash />;
 };
 
+const Receive = () => {
+  return <ReceivePage />;
+};
+
 function App() {
   return (
   <MemoryRouter>
     <Routes>
       <Route path="/" element={<IndexPage />} />
       <Route path="/dash" element={<Dashboard />} />
+      <Route path="/receive" element={<Receive />} />
     </Routes>
   </MemoryRouter>
   );
