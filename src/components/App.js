@@ -7,6 +7,7 @@ import ReceivePage from './transactions/ReceivePage';
 
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
+import MasternodesExplorer from './masternodes/MnExplorer';
 
 const IndexPage = () => {
   return (<>
@@ -40,6 +41,10 @@ const Receive = () => {
   return <ReceivePage />;
 };
 
+const MnEx = () => {
+  return <MasternodesExplorer />
+}
+
 function App() {
   return (
   <MemoryRouter>
@@ -47,6 +52,7 @@ function App() {
       <Route path="/" element={<IndexPage />} />
       <Route path="/dash" element={<Dashboard />} />
       <Route path="/receive" element={<Receive />} />
+      <Route path="/mnexplorer" element={<MnEx />} />
     </Routes>
   </MemoryRouter>
   );
