@@ -1,14 +1,48 @@
-import React from 'react';
-import { useTable, usePagination, useSortBy } from "react-table";
+import React, { useState } from 'react';
+import { useTable, usePagination, useSortBy, useFilters, useGlobalFilter, useAsyncDebounce } from "react-table";
 
+function GlobalFilter({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+}) {
+  const count = preGlobalFilteredRows.length
+  const [value, setValue] = useState(globalFilter)
+  const onChange = useAsyncDebounce(value => {
+    setGlobalFilter(value || undefined)
+  }, 200)
+
+  return (
+    <span>
+      Search:{' '}
+      <input
+        value={value || ""}
+        onChange={e => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} records...`}
+        style={{
+          fontSize: '1.1rem',
+          border: '0',
+        }}
+      />
+    </span>
+  )
+}
 
 export function TableDash({ columns, data }) {
 
 
-    const { getTableProps,
+    const { 
+        getTableProps,
         getTableBodyProps, 
         headerGroups, 
-        prepareRow, page, 
+        prepareRow, 
+        page,
+        setFilter,
+        preGlobalFilteredRows,
+        setGlobalFilter,
         canPreviousPage,
         canNextPage,
         pageOptions,
@@ -17,20 +51,29 @@ export function TableDash({ columns, data }) {
         nextPage,
         previousPage,
         setPageSize,
-        state: { pageIndex, pageSize },
+        state: { pageIndex, pageSize, globalFilter },
     } =
     useTable({
       columns,
       data,
       initialState: { pageIndex: 0 }
     },
+    useFilters,
+    useGlobalFilter,
     useSortBy,
     usePagination,
     );
+/////////////////////
+
 
     return (
         <>
-        <table className="table is-hoverable is-fullwidth" {...getTableProps()} border="1">
+        <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+         />
+        <table className="table is-hoverable is-fullwidth" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -62,16 +105,16 @@ export function TableDash({ columns, data }) {
         </tbody>
       </table>
         <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+        <button className="button is-info is-rounded is-outlined" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+        <button className="button is-info is-rounded is-outlined" onClick={() => previousPage()} disabled={!canPreviousPage}>
           {'<'}
         </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
+        <button className="button is-info is-rounded is-outlined" onClick={() => nextPage()} disabled={!canNextPage}>
           {'>'}
         </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+        <button className="button is-info is-rounded is-outlined" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
           {'>>'}
         </button>{' '}
         <span>
@@ -98,7 +141,7 @@ export function TableDash({ columns, data }) {
             setPageSize(Number(e.target.value))
           }}
         >
-          {[10, 20, 30, 40, 50].map(pageSize => (
+          {[10, 20, 30, 40, 50, 100].map(pageSize => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
