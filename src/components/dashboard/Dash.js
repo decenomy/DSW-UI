@@ -77,7 +77,7 @@ export function Dash() {
           setGetInfo(updatedGetInfo);
         }
         else if (mydata["type"] === "transaction") {
-          console.log("new tx");
+          setGetTxs(prevState => [mydata["data"], ...prevState,] );
         }
         else if (mydata["type"] == "getinfo") {
         const updatedGetInfo = {...getInfo};
@@ -137,7 +137,7 @@ export function Dash() {
   const [getTxs, setGetTxs] = useState([]);
   useMemo(() => get(
     'api/listtxs',
-    (response) => setGetTxs(response),
+    (response) => setGetTxs(response.reverse()),
     (error) => console.error(error)
   ), []);
  

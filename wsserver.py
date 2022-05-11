@@ -33,6 +33,7 @@ async def chaininfo(websocket):
             tx = coin.gettx(txid)
             dt_object = datetime.fromtimestamp(tx["time"])
             tx["time"] = str(dt_object)
+            tx["category"] = tx["details"][0]["category"]
             websockets.broadcast(USERS, json.dumps({"type":"transaction", "data":tx}))
         except Exception as e:
             websockets.broadcast(USERS, json.dumps({"error": str(e)}))
