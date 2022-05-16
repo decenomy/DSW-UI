@@ -45,6 +45,10 @@ const MnEx = () => {
   return <MasternodesExplorer />
 }
 
+const Boot = () => {
+  return <Bootstrap />
+}
+
 function App() {
   return (
   <MemoryRouter>
@@ -53,6 +57,7 @@ function App() {
       <Route path="/dash" element={<Dashboard />} />
       <Route path="/receive" element={<Receive />} />
       <Route path="/mnexplorer" element={<MnEx />} />
+      <Route path="/bootstrap" element={<Boot />} />
     </Routes>
   </MemoryRouter>
   );
