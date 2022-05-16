@@ -1,4 +1,4 @@
-import React, { useState useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { get } from 'utils/requests';
 import Navbar from 'components/navbar/Navbar';
 import TableDash from 'components/tables/TableDash';
