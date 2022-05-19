@@ -8,6 +8,7 @@ import ReceivePage from './transactions/ReceivePage';
 import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
 import MasternodesExplorer from './masternodes/MnExplorer';
+import SendPage from './transactions/SendPage';
 
 const IndexPage = () => {
   return (<>
@@ -49,6 +50,10 @@ const Boot = () => {
   return <Bootstrap />
 }
 
+const Send = () => {
+  return <SendPage />
+}
+
 function App() {
   return (
   <MemoryRouter>
@@ -56,6 +61,7 @@ function App() {
       <Route path="/" element={<IndexPage />} />
       <Route path="/dash" element={<Dashboard />} />
       <Route path="/receive" element={<Receive />} />
+      <Route path="/send" element={<Send />} />
       <Route path="/mnexplorer" element={<MnEx />} />
       <Route path="/bootstrap" element={<Boot />} />
     </Routes>
