@@ -9,6 +9,7 @@ import logo from 'logo.svg';
 import styles from 'components/App.module.scss';
 import MasternodesExplorer from './masternodes/MnExplorer';
 import SendPage from './transactions/SendPage';
+import Bootstrap from './utils/Bootstrap';
 
 const IndexPage = () => {
   return (<>

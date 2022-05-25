@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from 'components/navbar/Navbar';
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
 
 
 export function Bootstrap() {
-
+	const EventSource = NativeEventSource || EventSourcePolyfill;
+	const [data, setData] = useState(null)
+	useEffect(() => {
+		let eventSource = new EventSourcePolyfill("http://localhost:3001/bootstraplog", { headers : { 'Authorization': 'Bearer ' + localStorage.getItem('Authorization')} })
+		 eventSource.onmessage = (e) => {
+			setData(alert(e.data))
+			}
+		/*
+		eventSource.addEventListener('newEntry', e =>
+		updateLogs(e.data)
+	  )
+	  eventSource.addEventListener('close', () =>
+		eventSource.close()
+	  )
+  */
+	  return (() => eventSource.close() )
+	}, [])
     return (
         <div className='container'>
           <Navbar />

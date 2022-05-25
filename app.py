@@ -65,7 +65,7 @@ def login():
                 c = app_settings["coins"][selected_coin]
                 coin =  Decenomy(c["rpcuser"], c["rpcpassword"], c["host"], c["rpcport"])
                 test_conn = coin.getinfo()
-                additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"]}
+                additional_claims = {"loggedin": True, "user": c["rpcuser"], "pass": c["rpcpassword"], "host": c["host"], "port": c["rpcport"], "ticker": c["ticker"], "name": c["name"]}
                 access_token = create_access_token(identity=c["ticker"], additional_claims=additional_claims)
                 if pit == "Windows":
                     process = subprocess.Popen(['python.exe', 'wsserver.py', selected_coin], stdout=None, stderr=None, stdin=None, close_fds=True)
@@ -180,6 +180,23 @@ def sendto():
     else:
         msg = {"error":"All fields are mandatory"}
     return json.dumps(msg)
+
+
+@app.route('/bootstraplog')
+@jwt_required()
+def progress():
+    user_rpc = get_jwt()
+    coin = user_rpc["name"]
+    tick = user_rpc["ticker"]
+    c = app_settings["coins"][tick]
+    coin_name = c["name"].lower()
+    def getstatus():
+        yield "data:Downloading bootstrap... Please wait..\n\n"
+        bdownload("https://explorer.decenomy.net/bootstraps/"+tick+"/bootstrap.zip", "bootstrap.zip")
+        yield "data:Extracting....\n\n"
+        wipe(coin_name)
+        yield "data:Done! Please restart your wallet\n\n"
+    return Response(getstatus(), mimetype='text/event-stream')
 
 """
 -------------------------- APP SERVICES ----------------------------
